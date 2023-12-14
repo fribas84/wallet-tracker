@@ -9,7 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     WalletsModule,
     UsersModule,
-    AuthModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',

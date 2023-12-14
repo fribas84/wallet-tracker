@@ -6,6 +6,9 @@ export class Wallet {
   id: number;
 
   @Column({ unique: true })
+  name: string;
+
+  @Column({ unique: true })
   address: string;
 
   @Column()
