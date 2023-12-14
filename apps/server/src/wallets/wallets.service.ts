@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Wallet } from './entities/wallter.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { getBalances } from 'src/helpers/getBalance';
 
 @Injectable()
 export class WalletsService {
@@ -25,5 +26,8 @@ export class WalletsService {
     return this.walletRepository.findOneBy({ id });
   }
 
-  getWalletBalance(wallets[]:string)
+  async getWalletBalance(wallets: string[]) {
+    const balances = await getBalances(wallets);
+    return balances;
+  }
 }
