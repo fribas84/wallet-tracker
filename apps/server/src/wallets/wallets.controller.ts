@@ -7,6 +7,5 @@ export class WalletsController {
     return 'get all wallets of user id: ' + id;
   }
 
-    @Post('/:id')
-    
+  // @Post('/:id')
 }
