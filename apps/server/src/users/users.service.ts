@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -7,10 +12,13 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  //TODO - add error handling when user exits
   //TODO - remove password from response
-  create(email: string, password: string) {
-    const user = this.repo.create({ email, password });
+  async create(email: string, password: string) {
+    const existingUser = await this.repo.findOne({ where: { email } });
+    if (existingUser) {
+      throw new BadRequestException('User already exists');
+    }
+    const user = await this.repo.create({ email, password });
     return this.repo.save(user);
   }
 
