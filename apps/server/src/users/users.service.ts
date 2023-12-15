@@ -24,7 +24,6 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     const passwordMatch = await user.comparePassword(password);
-    console.log("PassworkdMatch: ", passwordMatch);
     if (!passwordMatch) {
       throw new NotFoundException('Wrong password');
     }
