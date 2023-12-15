@@ -6,5 +6,5 @@ export class AddWalletDto {
 
   @IsNotEmpty()
   @IsString()
-  wallet: string;
+  address: string;
 }

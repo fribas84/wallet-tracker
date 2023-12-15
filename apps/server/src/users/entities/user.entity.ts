@@ -26,10 +26,10 @@ export class User {
   })
   isConfirmed: boolean;
 
-  @Column({
-    nullable: true,
-  })
-  access_token: string;
+  // @Column({
+  //   nullable: true,
+  // })
+  // access_token: string;
 
   @BeforeInsert()
   beforeInsertActions() {
@@ -42,7 +42,7 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  async comparePassword(attempt: string) {
+  async comparePassword(attempt: string): Promise<boolean> {
     return await bcrypt.compare(attempt, this.password);
   }
 }

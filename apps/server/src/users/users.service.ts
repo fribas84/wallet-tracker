@@ -2,19 +2,14 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private repo: Repository<User>,
-    private jwtService: JwtService,
-  ) {}
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   //TODO - remove password from response
   //TODO - Send confirmation email
@@ -28,34 +23,24 @@ export class UsersService {
     return this.repo.save(user);
   }
 
-  //TODO return JWT token
-  async login(email: string, password: string) {
+  async findOneId(id: number) {
+    const user = await this.repo.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
+  async findOneByEmail(email: string) {
     const user = await this.repo.findOne({ where: { email } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const passwordMatch = await user.comparePassword(password);
-    if (!passwordMatch) {
-      throw new UnauthorizedException('Wrong password');
-    }
-    // if (!user.isConfirmed) {
-    //   throw new UnauthorizedException('User is not confirmed');
-    // }
-    const payload = { sub: user.id, username: user.email };
-    user.access_token = this.jwtService.sign(payload);
-    return this.repo.save(user);
+    return user;
   }
 
   findAll() {
     return `This action returns all users`;
-  }
-
-  findById(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  findByEmail(email: string) {
-    return `This action returns a #${email} user`;
   }
 
   update(id: number, attrs: Partial<User>) {
