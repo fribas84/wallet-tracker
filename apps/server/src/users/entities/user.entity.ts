@@ -26,6 +26,11 @@ export class User {
   })
   isConfirmed: boolean;
 
+  @Column({
+    nullable: true,
+  })
+  access_token: string;
+
   @BeforeInsert()
   beforeInsertActions() {
     this.isConfirmed = false;

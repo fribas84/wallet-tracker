@@ -7,10 +7,14 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repo: Repository<User>,
+    private jwtService: JwtService,
+  ) {}
 
   //TODO - remove password from response
   //TODO - Send confirmation email
@@ -34,11 +38,14 @@ export class UsersService {
     if (!passwordMatch) {
       throw new UnauthorizedException('Wrong password');
     }
-    if (!user.isConfirmed) {
-      throw new UnauthorizedException('User is not confirmed');
-    }
-    return user;
+    // if (!user.isConfirmed) {
+    //   throw new UnauthorizedException('User is not confirmed');
+    // }
+    const payload = { sub: user.id, username: user.email };
+    user.access_token = this.jwtService.sign(payload);
+    return this.repo.save(user);
   }
+
   findAll() {
     return `This action returns all users`;
   }
