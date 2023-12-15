@@ -1,14 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 
-
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User) private repo: Repository<User>
-  ) {}
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   //TODO - add error handling when user exits
   //TODO - remove password from response
@@ -25,11 +22,11 @@ export class UsersService {
     }
     const passwordMatch = await user.comparePassword(password);
     if (!passwordMatch) {
-      throw new NotFoundException('Wrong password');
+      throw new UnauthorizedException('Wrong password');
     }
-    // if (!user.isConfirmed) {
-    //   throw new NotFoundException('User not confirmed');
-    // }
+    if (!user.isConfirmed) {
+      throw new UnauthorizedException('User is not confirmed');
+    }
     return user;
   }
   findAll() {
