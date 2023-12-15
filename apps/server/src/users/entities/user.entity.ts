@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -22,5 +29,15 @@ export class User {
   @BeforeInsert()
   beforeInsertActions() {
     this.isConfirmed = false;
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  async comparePassword(attempt: string) {
+    return await bcrypt.compare(attempt, this.password);
   }
 }

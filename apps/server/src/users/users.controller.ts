@@ -13,11 +13,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('auth')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post('signup')
   create(@Body() body: CreateUserDto) {
     return this.usersService.create(body.email, body.password);
+  }
+
+  @Post('login')
+  login(@Body() body: CreateUserDto) {
+    return this.usersService.login(body.email, body.password);
   }
 
   @Get()
