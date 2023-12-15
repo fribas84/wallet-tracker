@@ -13,6 +13,8 @@ export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   //TODO - remove password from response
+  //TODO - Send confirmation email
+  //TODO - addToken
   async create(email: string, password: string) {
     const existingUser = await this.repo.findOne({ where: { email } });
     if (existingUser) {
