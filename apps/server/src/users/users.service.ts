@@ -1,10 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+
+  //TODO - add password hashing
+  //TODO - add error handling
+  //TODO - remove password from response
   create(email: string, password: string) {
-    return `This action adds a new user ${email} ${password}`;
+    const user = this.repo.create({ email, password });
+    return this.repo.save(user);
   }
 
   findAll() {
