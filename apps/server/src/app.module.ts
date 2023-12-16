@@ -5,8 +5,10 @@ import { WalletsModule } from './wallets/wallets.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     WalletsModule,
     UsersModule,
     TypeOrmModule.forRoot({
