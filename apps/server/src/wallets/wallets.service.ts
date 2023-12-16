@@ -32,4 +32,15 @@ export class WalletsService {
     const balances = await getBalances(wallets);
     return balances;
   }
+
+  async removeWallet(walletId: number, userId: number) {
+    const wallet = await this.walletRepository.findOne({
+      where: { id: walletId, userId },
+    });
+    if (!wallet) {
+      return false;
+    }
+    await this.walletRepository.remove(wallet);
+    return true;
+  }
 }

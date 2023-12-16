@@ -11,6 +11,7 @@ import {
 import { AddWalletDto } from './dtos/addWallet.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { WalletsService } from './wallets.service';
+import { parse } from 'path';
 
 @Controller('wallets')
 export class WalletsController {
@@ -22,9 +23,10 @@ export class WalletsController {
 
   //TODO only the owner of the wallet can get the balance
   //TODO the return value should have the balance in eth, usd and eur and if is old
-  @Get('/:walletId')
-  getBalance(@Param('walletId') walletId: string) {
-    return 'get balance of wallet id: ' + walletId;
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  getWalletsFromUser(@Request() req: any) {
+    return this.walletService.getWallets(parseInt(req.user.id));
   }
 
   //TODO implement
@@ -32,7 +34,6 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   addWallet(@Body() body: AddWalletDto, @Request() req: any) {
-    console.log('User ID:', req.user.id, 'Parsed ID:', parseInt(req.user.id));
     return this.walletService.createWallet(
       body.name,
       body.address,
@@ -40,9 +41,12 @@ export class WalletsController {
     );
   }
 
-  //
+  @UseGuards(JwtAuthGuard)
   @Delete('/:walletId')
-  removeWallet(@Param('walletId') walletId: string) {
-    return 'remove wallet id: ' + walletId;
+  removeWallet(@Param('walletId') walletId: string, @Request() req: any) {
+    return this.walletService.removeWallet(
+      parseInt(walletId),
+      parseInt(req.user.id),
+    );
   }
 }
