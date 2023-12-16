@@ -9,6 +9,7 @@ import {
   ClassSerializerInterceptor,
   Get,
   UseGuards,
+  Request
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -37,7 +38,8 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getProfile(@Param('id') id: string) {
+  getProfile(@Param('id') id: string, @Request() req: any) {
+    console.log(req.user);
     return this.usersService.findOneId(parseInt(id));
   }
 }
