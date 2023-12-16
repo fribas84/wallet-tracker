@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, Matches } from 'class-validator';
 export class AddWalletDto {
   @IsNotEmpty()
   @IsString()
@@ -6,5 +6,6 @@ export class AddWalletDto {
 
   @IsNotEmpty()
   @IsString()
+  @Matches(/^0x[a-fA-F0-9]{40}$/, { message: 'Invalid address' })
   address: string;
 }
