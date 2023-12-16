@@ -11,9 +11,9 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  //TODO - remove password from response
-  //TODO - Send confirmation email
-  //TODO - addToken
+    //TODO - Send confirmation email
+    //TODO - UPDATE USER
+    
   async create(email: string, password: string) {
     const existingUser = await this.repo.findOne({ where: { email } });
     if (existingUser) {

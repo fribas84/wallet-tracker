@@ -1,8 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AddWalletDto } from './dtos/addWallet.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { WalletsService } from './wallets.service';
 
 @Controller('wallets')
 export class WalletsController {
+  constructor(private readonly walletService: WalletsService) {}
   @Get('/:id')
   getWallets(@Param('id') id: string) {
     return 'get all wallets of user id: ' + id;
@@ -17,10 +29,14 @@ export class WalletsController {
 
   //TODO implement
 
-  @Post('/:userid')
-  addWallet(@Param('userid') userid: string, @Body() body: AddWalletDto) {
-    return (
-      'add wallet to user id: ' + userid + ' with address: ' + body.address
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  addWallet(@Body() body: AddWalletDto, @Request() req: any) {
+    console.log('User ID:', req.user.id, 'Parsed ID:', parseInt(req.user.id));
+    return this.walletService.createWallet(
+      body.name,
+      body.address,
+      parseInt(req.user.id),
     );
   }
 

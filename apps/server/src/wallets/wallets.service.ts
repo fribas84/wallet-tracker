@@ -10,11 +10,13 @@ export class WalletsService {
     @InjectRepository(Wallet) private walletRepository: Repository<Wallet>,
   ) {}
 
-  createWallet(name: string, address: string, userId: number) {
-    const wallet = new Wallet();
-    wallet.name = name;
-    wallet.address = address;
-    wallet.userId = userId;
+  //TODO error handling entity contraints
+  async createWallet(name: string, address: string, userId: number) {
+    const wallet = await this.walletRepository.create({
+      name,
+      address,
+      userId,
+    });
     return this.walletRepository.save(wallet);
   }
 

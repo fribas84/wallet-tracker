@@ -9,14 +9,13 @@ import {
   ClassSerializerInterceptor,
   Get,
   UseGuards,
-  Request
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-//TODO implement better the authguard  using passport
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

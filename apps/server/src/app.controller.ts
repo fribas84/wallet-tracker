@@ -19,6 +19,6 @@ export class AppController {
   @Post('auth/login')
   async login(@Req() req: any) {
     console.log(req.user);
-    return this.authService.login(req.user);
+    return this.authService.generateAccessToken(req.user.email);
   }
 }
