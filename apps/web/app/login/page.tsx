@@ -1,22 +1,56 @@
 "use client"
 import { useState } from 'react'
 import Link from 'next/link';
+import Alert from '../../components/Alert';
+import axios from 'axios';
+import { useRouter } from "next/navigation"
 
 
 type Props = {}
 
 const Login = (props: Props) => {
+  const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMsg, setAlertMsg] = useState<string>(''); 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle the login logic here
+    if (email === '' || email.length < 6) {
+      setShowAlert(true);
+      setAlertMsg('Invalid email');
+      return;
+    }
+    if (password === '' || password.length < 6) {
+      setShowAlert(true);
+      setAlertMsg('Invalid password');
+      return;
+    }
+    try {
+           
+      const url = `http://localhost:4000/api/v1/auth/login`;
+      const data = { email, password };
+      const response = await axios.post(url, data);
+      const { access_token } = response.data;
+      localStorage.setItem('token', access_token);
+      setShowAlert(false);
+      setAlertMsg('');
+      router.push("/wallets");
+    }
+    catch (err) {
+      if (err.response.data.message) {
+        setShowAlert(true);
+        setAlertMsg(err.response.data.message);
+      }
+      
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center mt-16">
       <div className="w-2/3 p-8 bg-white rounded shadow-md">
+        {showAlert && <Alert error={true} msg={alertMsg} />}
         <form className="mb-4" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">
