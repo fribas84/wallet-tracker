@@ -33,13 +33,14 @@ const Signup = (props: Props) => {
             />
           </div>
           <div className="mb-6">
-            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="password">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="new-password">
               Password
             </label>
             <input
               className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="password"
+              id="new-password"
               type="password"
+              autoComplete='new-password'
               placeholder="******************"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -51,8 +52,9 @@ const Signup = (props: Props) => {
             </label>
             <input
               className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="passwor2"
+              id="password2"
               type="password"
+              autoComplete='new-password'
               placeholder="******************"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}

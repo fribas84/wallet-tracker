@@ -32,12 +32,13 @@ const Login = (props: Props) => {
             />
           </div>
           <div className="mb-6">
-            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="password">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="current-password">
               Password
             </label>
             <input
               className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              id="password"
+              id="current-password"
+              autoComplete='current-password'
               type="password"
               placeholder="******************"
               value={password}
