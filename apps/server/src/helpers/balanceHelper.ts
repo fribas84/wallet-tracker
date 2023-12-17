@@ -1,11 +1,13 @@
 import axios from 'axios';
+import { weiToFiat } from '../wallets/interfaces';
 
-const getBalance = async (wallet: string): Promise<string> => {
+const getBalance = async (wallet: string): Promise<number> => {
   try {
     const response = await axios.get(
       `https://api.etherscan.io/api?module=account&action=balance&address=${wallet}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`,
     );
-    return response.data.result;
+    const weiToEther = Number(BigInt(response.data.result) / BigInt(10 ** 18))
+    return weiToEther;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -29,4 +31,23 @@ const getIsOld = async (wallet: string): Promise<boolean> => {
     throw new Error(error.message);
   }
 };
-export { getBalance, getIsOld };
+
+const getPrice = async (balance: number): Promise<weiToFiat> => {
+  try {
+    const url =
+      'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR';
+    const response = await axios.get(url);
+    const etherToDollar = balance * response.data.USD;
+    const etherToEuro = balance * response.data.EUR;
+    return {
+      usd: etherToDollar,
+      eur: etherToEuro,
+      rateUsd: Number(response.data.USD),
+      rateEur: Number(response.data.EUR),
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { getBalance, getIsOld, getPrice };
