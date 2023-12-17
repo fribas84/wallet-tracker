@@ -1,4 +1,5 @@
 "use client"
+import Link from 'next/link';
 import { useState } from 'react'
 
 type Props = {}
@@ -67,12 +68,12 @@ const Signup = (props: Props) => {
           </div>
         </form>
         <div className="text-center">
-          <a className="inline-block text-sm font-bold text-teal-500 align-baseline hover:text-teal-800" href="/signup">
-            Sign in
-          </a>
-          <a className="inline-block ml-2 text-sm font-bold text-teal-500 align-baseline hover:text-teal-800" href="/forgot-password">
+          <Link className="mx-5 inline-block text-sm font-bold text-teal-500 align-baseline hover:text-teal-800" href="/login">
+            Login
+          </Link>
+          <Link className="mx-5 inline-block ml-2 text-sm font-bold text-teal-500 align-baseline hover:text-teal-800" href="/forgot-password">
             Forgot Password?
-          </a>
+          </Link>
         </div>
       </div>
     </div>
