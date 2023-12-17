@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Alert from '../../components/Alert';
 import axios from 'axios';
 import { useRouter } from "next/navigation"
+import { useAuth } from '@/context/authContext';
 
 
 type Props = {}
@@ -13,7 +14,9 @@ const Login = (props: Props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [alertMsg, setAlertMsg] = useState<string>(''); 
+  const [alertMsg, setAlertMsg] = useState<string>('');
+
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,24 +30,15 @@ const Login = (props: Props) => {
       setAlertMsg('Invalid password');
       return;
     }
+    setShowAlert(false);
+    setAlertMsg('');
     try {
-           
-      const url = `http://localhost:4000/api/v1/auth/login`;
-      const data = { email, password };
-      const response = await axios.post(url, data);
-      const { access_token } = response.data;
-      localStorage.setItem('token', access_token);
-      setShowAlert(false);
-      setAlertMsg('');
-      router.push("/wallets");
+      await login(email, password);
     }
     catch (err) {
-      if (err.response.data.message) {
         setShowAlert(true);
-        setAlertMsg(err.response.data.message);
+        setAlertMsg(err.message || 'Something went wrong');
       }
-      
-    }
   };
 
   return (

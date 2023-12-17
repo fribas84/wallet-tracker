@@ -1,5 +1,7 @@
 'use client';
+import { useAuth } from '@/context/authContext';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 interface wallet {
@@ -12,6 +14,7 @@ type Props = {}
 
 const Wallet = (props: Props) => {
     const [wallets, setWallets] = useState<wallet[]>([]);
+    const router = useRouter(); 
 
     useEffect(() => {
         const fecthWallets = async () => {
@@ -19,7 +22,8 @@ const Wallet = (props: Props) => {
                 const url = `http://localhost:4000/api/v1/wallets`
                 const token = localStorage.getItem('token');
                 if (!token) {
-                    return;
+                    router.push('/login');
+                    return
                 }
                 const config = {
                     headers: {
@@ -36,7 +40,7 @@ const Wallet = (props: Props) => {
             }
         }
         fecthWallets();
-    }, []);
+        }, [router]);
     return (
         <div className='bg-white m-5 p-5 rounded-ll shadow-xl'>
             <h1 className='text-3xl font-bold'>Wallets</h1>

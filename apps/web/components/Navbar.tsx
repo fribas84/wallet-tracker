@@ -1,11 +1,24 @@
 'use client'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
+import { useRouter } from "next/navigation";
+import { UserProfile } from '@/types/UserProfile';
+import { useAuth } from '@/context/authContext';
 
-type Props = {}
+interface Props {
 
-const Navbar = (props: Props) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
+}
+
+const Navbar = ({ }: Props) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [loaded,setLoaded] = useState(false);
+    const { user, logout, loading } = useAuth();
+    const router = useRouter();
+    
+    console.log("navbar", user);
+    if (loading) {
+        return <div>Loading...</div>
+    }
     return (
         <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6 rounded shadow-2xl m-5">
             <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -23,15 +36,19 @@ const Navbar = (props: Props) => {
                     </Link>
                     <Link href="/wallets" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Wallets</Link>
                 </div>
-                <div>
-                    <Link href="/login" className="mx-2 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Login</Link>
-                </div>
-                <div>
-                    <Link href="/signup" className="mx-2 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Sign up</Link>
-                </div>
-                <div>
-                    <Link href="/logout" className="mx-2 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Logoff</Link>
-                </div>
+                {user.email}
+                {(user.email.length === 0) && <>
+                    <div>
+                        <Link href="/login" className="mx-2 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Login</Link>
+                    </div>
+                    <div>
+                        <Link href="/signup" className="mx-2 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Sign up</Link>
+                    </div>
+                </>}
+                {(user.email.length>0)  && <div>
+                    <button onClick={logout} className="mx-2 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Logoff</button>
+                </div>}
+
             </div>
         </nav>
     )

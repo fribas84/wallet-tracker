@@ -39,11 +39,9 @@ export default function WalletsLayout({ children }: { children: React.ReactNode 
 
     },[router]);
 
-
-
     return (
         <>
-            <h1>Layout wallet Loged IN: {profile?.email} </h1>
+            {/* <h1>Layout wallet Loged IN: {profile?.email} </h1> */}
             <section>
                 {children}
             </section>
