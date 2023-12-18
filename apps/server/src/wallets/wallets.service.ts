@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Wallet } from './entities/wallet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -21,14 +21,6 @@ export class WalletsService {
     wallet.userId = userId;
     wallet.preference = wallets.length;
     return this.walletRepository.save(wallet);
-
-    // const wallet = await this.walletRepository.create({
-    //   name,
-    //   address,
-    //   userId,
-    //   wallets.length,
-    // });
-    // return this.walletRepository.save(wallet);
   }
 
   getWallets(userId: number) {
@@ -68,5 +60,23 @@ export class WalletsService {
     }
     await this.walletRepository.remove(wallet);
     return true;
+  }
+
+  async updateWallets(wallets: Wallet[], userId: number) {
+    for (const wallet of wallets) {
+      const existingWallet = await this.walletRepository.findOne({
+        where: { id: wallet.id, userId },
+      });
+      if (!existingWallet || existingWallet.userId !== userId) {
+        throw new UnauthorizedException(
+          'You do not have permission to update this wallet.',
+        );
+      }
+      existingWallet.name = wallet.name;
+      existingWallet.address = wallet.address;
+      existingWallet.preference = wallet.preference;
+      await this.walletRepository.save(existingWallet);
+    }
+    return { status: 'success', message: 'Wallets updated successfully' };
   }
 }

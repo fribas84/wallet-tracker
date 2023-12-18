@@ -17,6 +17,7 @@ const WalletTable = ({ wallets, setWallets }: Props) => {
         wallet1.preference = wallet2.preference;
         wallet2.preference = tempPreference;
         [newWallets[index1], newWallets[index2]] = [wallet2, wallet1];
+        console.log(newWallets);
         setWallets(newWallets);
     };
 
