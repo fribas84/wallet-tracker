@@ -16,6 +16,7 @@ type Props = {}
 const Wallet = (props: Props) => {
     const [wallets, setWallets] = useState<wallet[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [newWallet, setNewWallet] = useState<boolean>(false);
 
     const router = useRouter();
 
@@ -43,10 +44,10 @@ const Wallet = (props: Props) => {
             }
         }
         fecthWallets();
-    }, [router]);
+    }, [router, newWallet]);
     return (
         <>
-            <ModalNewWallet showModal={showModal} setShowModal={setShowModal}/>
+            <ModalNewWallet showModal={showModal} setShowModal={setShowModal} setNewWallet={setNewWallet}/>
             <div className='bg-white m-5 p-5 rounded-lg shadow-xl'>
                 <div className='mx-2 flex justify-between items-center'>
                     <h1 className='text-3xl font-bold'>Wallets</h1>
@@ -54,8 +55,8 @@ const Wallet = (props: Props) => {
                 </div>
                 {wallets.length > 0 ? (
                     <div className="relative overflow-x-auto mt-5">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-lg">
+                            <thead className="text-xs text-gray-900 uppercase bg-gray-200 rounded-lg">
                                 <tr>
                                     <th scope="col" className="px-6 py-3 font-bold text-lg">
                                         Wallet Name
@@ -70,7 +71,7 @@ const Wallet = (props: Props) => {
                             </thead>
                             <tbody>
                                 {wallets.map((wallet) => (
-                                    <tr key={wallet.id} className="bg-white dark:bg-gray-700">
+                                    <tr key={wallet.id} className="bg-white">
                                         <td className="px-6 py-3 text-lg font-semibold">
                                             {wallet.name}
                                         </td>
