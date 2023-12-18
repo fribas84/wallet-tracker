@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
-export class AddWalletDto {
+export class UpdateWalletDTO {
   @IsNotEmpty()
   @IsString()
   @IsOptional()

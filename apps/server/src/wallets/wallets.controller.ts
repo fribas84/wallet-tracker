@@ -14,6 +14,7 @@ import { AddWalletDto } from './dtos/addWallet.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { WalletsService } from './wallets.service';
 import { UpdateWalletsDTO } from './dtos/updateWallets.dto';
+import { UpdateWalletDTO } from './dtos/updateWallet.dto';
 
 @Controller('wallets')
 export class WalletsController {
@@ -55,6 +56,16 @@ export class WalletsController {
       parseInt(req.user.id),
     );
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/edit/:walletId')
+  edit(@Body() body: UpdateWalletDTO, @Request() req: any) {
+    return this.walletService.updateWallets(
+      body.,
+      parseInt(req.user.id),
+    );
+  }
+
 
   @UseGuards(JwtAuthGuard)
   @Get('balance/:walletId')
