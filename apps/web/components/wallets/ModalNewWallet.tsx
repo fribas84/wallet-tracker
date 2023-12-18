@@ -44,6 +44,7 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
         setAlert(false);
         setAlertMsg('');
         try {
+            
             const url = `http://localhost:4000/api/v1/wallets`
             const token = localStorage.getItem('token');
             if (!token) {
@@ -55,7 +56,7 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
                     "Content-Type": "application/json"
                 }
             }
-            const body = JSON.stringify({ name, address });
+            const body = { name:name, address: address };
             const response = await axios.post(url, body, config);
             console.log(response);
             setName('');
@@ -79,7 +80,7 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 {/*header*/}
                                 {showAlert && <Alert error={alert} msg={alertMsg} />}
-                                <form >
+                                <form onSubmit={handleSubmit} >
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                         <h3 className="text-3xl font-semibold">
                                             New Wallet to track

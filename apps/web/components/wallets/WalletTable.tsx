@@ -4,9 +4,32 @@ import WalletTableRow from './WalletTableRow';
 
 interface Props {
     wallets: IWallet[];
+    setWallets: React.Dispatch<React.SetStateAction<IWallet[]>>;
 }
 
-const WalletTable = ({ wallets }: Props) => {
+const WalletTable = ({ wallets, setWallets }: Props) => {
+    
+    const swapWallets = (index1: number, index2: number) => {
+        let newWallets: IWallet[] = [...wallets];
+        let wallet1 = newWallets[index1];
+        let wallet2 = newWallets[index2];
+        const tempPreference = wallet1.preference;
+        wallet1.preference = wallet2.preference;
+        wallet2.preference = tempPreference;
+
+        [newWallets[index1], newWallets[index2]] = [wallet2, wallet1];
+        setWallets(newWallets);
+    };
+
+    const moveUp = (preference: number) => {
+        const index = wallets.findIndex(w => w.preference === preference);
+        swapWallets(index, index - 1);
+    }
+    const moveDown = (preference: number) => {
+        const index = wallets.findIndex(w => w.preference === preference);
+        swapWallets(index, index + 1);
+    }
+
     return (
         <div className="relative overflow-x-auto mt-5">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-lg">
@@ -25,7 +48,7 @@ const WalletTable = ({ wallets }: Props) => {
                 </thead>
                 <tbody>
                     {wallets.map((wallet) => (
-                        <WalletTableRow key={wallet.id} wallet={wallet} />
+                        <WalletTableRow key={wallet.id} wallet={wallet} moveDown={moveDown} moveUp={moveUp} walletCount={wallets.length}/>
                     ))}
                 </tbody>
             </table>

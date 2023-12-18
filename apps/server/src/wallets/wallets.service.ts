@@ -4,23 +4,31 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { getBalance, getIsOld, getPrice } from 'src/helpers/balanceHelper';
 import { weiToFiat } from './interfaces';
-import { Balance } from './entities/balance.entity';
 
 @Injectable()
 export class WalletsService {
   constructor(
     @InjectRepository(Wallet) private walletRepository: Repository<Wallet>,
-    @InjectRepository(Balance) private balanceRepository: Repository<Balance>,
   ) {}
 
   //TODO error handling entity contraints
   async createWallet(name: string, address: string, userId: number) {
-    const wallet = await this.walletRepository.create({
-      name,
-      address,
-      userId,
-    });
+    const wallets = await this.getWallets(userId);
+
+    const wallet = await this.walletRepository.create();
+    wallet.name = name;
+    wallet.address = address;
+    wallet.userId = userId;
+    wallet.preference = wallets.length;
     return this.walletRepository.save(wallet);
+
+    // const wallet = await this.walletRepository.create({
+    //   name,
+    //   address,
+    //   userId,
+    //   wallets.length,
+    // });
+    // return this.walletRepository.save(wallet);
   }
 
   getWallets(userId: number) {

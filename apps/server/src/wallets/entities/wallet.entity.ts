@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Unique(['name', 'userId'])
 @Unique(['address', 'userId'])
+@Unique(['preference', 'userId'])
 @Entity()
 export class Wallet {
   @PrimaryGeneratedColumn()
@@ -15,4 +16,7 @@ export class Wallet {
 
   @Column()
   userId: number;
+
+  @Column()
+  preference: number;
 }

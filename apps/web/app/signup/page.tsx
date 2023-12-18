@@ -1,23 +1,77 @@
 "use client"
 import Link from 'next/link';
-import { useState } from 'react'
-
+import { use, useState } from 'react'
+import Alert from '@/components/Alert';
+import axios from 'axios';
+import { useRouter} from 'next/navigation';
 type Props = {}
 
 const Signup = (props: Props) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [password2, setPassword2] = useState<string>('');
+  const [alert, setAlert] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMsg, setAlertMsg] = useState<string>('');
 
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle the login logic here
+    if(email === '' || password === '' || password2 === '') {
+      setAlertMsg('Please fill out all fields');
+      setAlert(true);
+      setShowAlert(true);
+      return
+    }
+    if(password !== password2) {
+      setAlertMsg('Passwords do not match');
+      setAlert(true);
+      setShowAlert(true);
+      return
+    }
+    if(password.length < 6) {
+      setAlertMsg('Password must be at least 6 characters');
+      setAlert(true);
+      setShowAlert(true);
+      return
+    }
+    if(!email.includes('@')) {
+      setAlertMsg('Please enter a valid email');
+      setAlert(true);
+      setShowAlert(true);
+      return
+    }
+    try {
+      const url: string = 'http://localhost:4000/api/v1/users/signup'
+      const config = {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+      const response = axios.post(url, { email, password }, config);
+      console.log(response);
+      setEmail('');
+      setPassword('');
+      setPassword2('');
+      setShowAlert(false);
+      setAlert(false);
+      setAlertMsg('');
+      router.push('/login');
+
+
+    } catch (error) {
+      console.log(error)
+      setAlertMsg(error.response.data.error);
+      setAlert(true);
+      setShowAlert(true);
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center mt-16">
       <div className="w-2/3 p-8 bg-white rounded shadow-md">
+        {showAlert && <Alert error={alert} msg={alertMsg} />}
         <form className="mb-4" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">

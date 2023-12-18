@@ -26,6 +26,8 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   addWallet(@Body() body: AddWalletDto, @Request() req: any) {
+    console.log('container');
+    console.log(body);
     return this.walletService.createWallet(
       body.name,
       body.address,

@@ -33,8 +33,7 @@ const Wallet = (props: Props) => {
                 }
                 const response = await axios.get(url, config);
                 console.log(response.data)
-                const walletsData = response.data;
-                console.log(walletsData);
+                const walletsData = response.data.sort((a:IWallet, b:IWallet) => a.preference - b.preference);
                 setWallets(walletsData);
             } catch (error) {
                 console.log(error);
@@ -51,7 +50,7 @@ const Wallet = (props: Props) => {
                     <button onClick={() => setShowModal(true)} className='text-white mr-2 border py-2 px-5 bg-teal-500  text-lg font-semibold hover:bg-teal-700 rounded'>New</button>
                 </div>
                 {wallets.length > 0 ? (
-                    < WalletTable wallets={wallets} />
+                    < WalletTable wallets={wallets} setWallets={setWallets} />
                 ) : (
                     <h2 className='text-2xl font-bold'>No Wallets Found</h2>
                 )}
