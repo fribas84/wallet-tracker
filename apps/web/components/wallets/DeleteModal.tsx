@@ -10,9 +10,10 @@ interface Props {
     setShowModal: Dispatch<SetStateAction<boolean>>
     id: number,
     name: string,
+    deleteWallet: (id: number) => void
 }
 
-export default function ModalNewWallet({ showModal, setShowModal, id, name }: Props) {
+export default function ModalNewWallet({ showModal, setShowModal, id, name, deleteWallet }: Props) {
     const [alert, setAlert] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [alertMsg, setAlertMsg] = useState<string>('');
@@ -43,10 +44,12 @@ export default function ModalNewWallet({ showModal, setShowModal, id, name }: Pr
                 }
             }
             const response = await axios.delete(url, config);
+
             setShowAlert(true);
             setAlert(false);
             setAlertMsg('Wallet removed');
             setShowModal(false);
+            deleteWallet(id);
 
         } catch (error) {
             setShowAlert(true);

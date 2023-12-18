@@ -14,7 +14,6 @@ type Props = {}
 const Wallet = (props: Props) => {
     const [wallets, setWallets] = useState<IWallet[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [newWallet, setNewWallet] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState<string>('');
     const [alertError, setAlertError] = useState<boolean>(false);
@@ -33,7 +32,7 @@ const Wallet = (props: Props) => {
 
         // Cleanup function to clear the timer if the component unmounts
         return () => clearTimeout(timer);
-    }, [showAlert]); 
+    }, [showAlert]);
 
     useEffect(() => {
         const fecthWallets = async () => {
@@ -58,7 +57,11 @@ const Wallet = (props: Props) => {
             }
         }
         fecthWallets();
-    }, [router, newWallet]);
+    }, [router]);
+
+    const addNewWallet = (newWallet: IWallet) => {
+        setWallets([...wallets, newWallet]); 
+    }
 
     const handleSavePreference = async () => {
         console.log("inside handleSavePreference");
@@ -75,14 +78,14 @@ const Wallet = (props: Props) => {
                     Authorization: `Bearer ${token}`
                 }
             }
-            const response = await axios.patch(url, {wallets : wallets}, config);
+            const response = await axios.patch(url, { wallets: wallets }, config);
             console.log(response.data)
             setAlertError(false);
             setAlertMessage(response.data.message);
             setShowAlert(true);
             setChangesSaved(true);
 
-            
+
         } catch (error) {
             setAlertError(true);
             setAlertMessage(error.message);
@@ -91,19 +94,19 @@ const Wallet = (props: Props) => {
     }
     return (
         <>
-            <ModalNewWallet showModal={showModal} setShowModal={setShowModal} setNewWallet={setNewWallet} />
+            <ModalNewWallet showModal={showModal} setShowModal={setShowModal} addNewWallet={addNewWallet} />
             <div className='bg-white m-5 p-5 rounded-lg shadow-xl'>
                 {showAlert && <Alert error={alertError} msg={alertMessage} />}
                 <div className='mx-2 flex justify-between items-center'>
                     <h1 className='text-3xl font-bold'>Wallets</h1>
                     <div>
-                        {!changesSaved && <button onClick={handleSavePreference} className='text-white mr-2 border py-2 px-5  bg-sky-500  text-lg font-semibold hover:bg-sky-700 rounded'>Save changes</button> }
+                        {!changesSaved && <button onClick={handleSavePreference} className='text-white mr-2 border py-2 px-5  bg-sky-500  text-lg font-semibold hover:bg-sky-700 rounded'>Save changes</button>}
                         <button onClick={() => setShowModal(true)} className='text-white mr-2 border py-2 px-5 bg-teal-500  text-lg font-semibold hover:bg-teal-700 rounded'>New</button>
                     </div>
 
                 </div>
                 {wallets.length > 0 ? (
-                    < WalletTable wallets={wallets} setWallets={setWallets} setChangesSaved={setChangesSaved}/>
+                    < WalletTable wallets={wallets} setWallets={setWallets} setChangesSaved={setChangesSaved} />
                 ) : (
                     <h2 className='text-2xl font-bold'>No Wallets Found</h2>
                 )}

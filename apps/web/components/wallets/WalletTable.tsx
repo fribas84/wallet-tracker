@@ -31,6 +31,9 @@ const WalletTable = ({ wallets, setWallets, setChangesSaved }: Props) => {
         swapWallets(index, index + 1);
     }
 
+    const deleteWallet = (id: number) => {
+        setWallets(wallets.filter(w => w.id !== id));
+    }
     return (
         <div className="relative overflow-x-auto mt-5">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-lg">
@@ -49,7 +52,7 @@ const WalletTable = ({ wallets, setWallets, setChangesSaved }: Props) => {
                 </thead>
                 <tbody>
                     {wallets.map((wallet) => (
-                        <WalletTableRow key={wallet.id} wallet={wallet} moveDown={moveDown} moveUp={moveUp} walletCount={wallets.length}/>
+                        <WalletTableRow key={wallet.id} wallet={wallet} moveDown={moveDown} moveUp={moveUp} walletCount={wallets.length} deleteWallet={deleteWallet}/>
                     ))}
                 </tbody>
             </table>

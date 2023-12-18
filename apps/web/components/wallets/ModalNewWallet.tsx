@@ -2,16 +2,17 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
 import axios from "axios";
+import { IWallet } from "@/types/Wallet";
 
 //TODO improce error handling 
 
 interface Props {
     showModal: boolean,
     setShowModal: Dispatch<SetStateAction<boolean>>
-    setNewWallet: Dispatch<SetStateAction<boolean>>
+    addNewWallet: (newWallet: IWallet) => void
 }
 
-export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }: Props) {
+export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }: Props) {
     const [name, setName] = useState<string>('');
     const [address, setAddress] = useState<string>('');
     const [alert, setAlert] = useState<boolean>(false);
@@ -73,8 +74,9 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
             console.log(response);
             setName('');
             setAddress('');
+            addNewWallet(response.data);
             setShowModal(false);
-            setNewWallet(true);
+            
         }
         catch (err) {
             console.log(err);

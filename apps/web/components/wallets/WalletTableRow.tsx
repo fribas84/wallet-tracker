@@ -7,9 +7,10 @@ interface Props {
     moveUp: (preference: number) => void;
     moveDown: (preference: number) => void;
     walletCount: number;
+    deleteWallet: (id: number) => void;
 }
 
-const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount }: Props) => {
+const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount, deleteWallet }: Props) => {
     const [showDetails, setShowDetails] = useState<boolean>(false);
     const [showEdit, setShowEdit] = useState<boolean>(false);
     const [showRemove, setShowRemove] = useState<boolean>(false);
@@ -46,7 +47,7 @@ const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount }: Props) => {
           </td>
             <td>
                 <ModalDetails name={wallet.name} showModalDetails={showDetails} setShowModalDetails={setShowDetails} id={wallet.id} />
-                <DeleteModal name={wallet.name} showModal={showRemove} setShowModal={setShowRemove} id={wallet.id} />
+                <DeleteModal name={wallet.name} showModal={showRemove} setShowModal={setShowRemove} id={wallet.id} deleteWallet={deleteWallet}/>
             </td>
         </tr>
     )
