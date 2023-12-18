@@ -5,9 +5,10 @@ import WalletTableRow from './WalletTableRow';
 interface Props {
     wallets: IWallet[];
     setWallets: React.Dispatch<React.SetStateAction<IWallet[]>>;
+    setChangesSaved: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const WalletTable = ({ wallets, setWallets }: Props) => {
+const WalletTable = ({ wallets, setWallets, setChangesSaved }: Props) => {
     
     const swapWallets = (index1: number, index2: number) => {
         let newWallets: IWallet[] = [...wallets];
@@ -17,8 +18,8 @@ const WalletTable = ({ wallets, setWallets }: Props) => {
         wallet1.preference = wallet2.preference;
         wallet2.preference = tempPreference;
         [newWallets[index1], newWallets[index2]] = [wallet2, wallet1];
-        console.log(newWallets);
-        setWallets(newWallets);
+        setWallets(newWallets)
+        setChangesSaved(false);
     };
 
     const moveUp = (preference: number) => {

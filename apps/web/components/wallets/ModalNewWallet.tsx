@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
 import axios from "axios";
@@ -17,6 +17,18 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
     const [alert, setAlert] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [alertMsg, setAlertMsg] = useState<string>('');
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (showAlert) {
+            timer = setTimeout(() => {
+                setShowAlert(false);
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+
+        // Cleanup function to clear the timer if the component unmounts
+        return () => clearTimeout(timer);
+    }, [showAlert]); 
 
     const handleClose = () => {
         setName('');

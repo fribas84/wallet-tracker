@@ -34,6 +34,17 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
         setAlertMsg('');
         setShowModalDetails(false);
     }
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (showAlert) {
+            timer = setTimeout(() => {
+                setShowAlert(false);
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+
+        // Cleanup function to clear the timer if the component unmounts
+        return () => clearTimeout(timer);
+    }, [showAlert]); 
 
     useEffect(() => {
         const fecthWalletDetails = async () => {

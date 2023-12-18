@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link';
 import Alert from '../../components/Alert';
 import axios from 'axios';
@@ -17,6 +17,18 @@ const Login = (props: Props) => {
   const [alertMsg, setAlertMsg] = useState<string>('');
 
   const { login } = useAuth();
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showAlert) {
+      timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 5000); // 5000 milliseconds = 5 seconds
+    }
+
+    // Cleanup function to clear the timer if the component unmounts
+    return () => clearTimeout(timer);
+  }, [showAlert]); 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

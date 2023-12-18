@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link';
-import { use, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import Alert from '@/components/Alert';
 import axios from 'axios';
 import { useRouter} from 'next/navigation';
@@ -16,6 +16,18 @@ const Signup = (props: Props) => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showAlert) {
+      timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 5000); // 5000 milliseconds = 5 seconds
+    }
+
+    // Cleanup function to clear the timer if the component unmounts
+    return () => clearTimeout(timer);
+  }, [showAlert]);  
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if(email === '' || password === '' || password2 === '') {

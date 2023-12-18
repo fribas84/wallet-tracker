@@ -18,6 +18,7 @@ const Wallet = (props: Props) => {
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState<string>('');
     const [alertError, setAlertError] = useState<boolean>(false);
+    const [changesSaved, setChangesSaved] = useState<boolean>(true);
 
     const router = useRouter();
 
@@ -79,6 +80,7 @@ const Wallet = (props: Props) => {
             setAlertError(false);
             setAlertMessage(response.data.message);
             setShowAlert(true);
+            setChangesSaved(true);
 
             
         } catch (error) {
@@ -95,13 +97,13 @@ const Wallet = (props: Props) => {
                 <div className='mx-2 flex justify-between items-center'>
                     <h1 className='text-3xl font-bold'>Wallets</h1>
                     <div>
-                        <button onClick={handleSavePreference} className='text-white mr-2 border py-2 px-5  bg-sky-500  text-lg font-semibold hover:bg-sky-700 rounded'>Save changes</button>
+                        {!changesSaved && <button onClick={handleSavePreference} className='text-white mr-2 border py-2 px-5  bg-sky-500  text-lg font-semibold hover:bg-sky-700 rounded'>Save changes</button> }
                         <button onClick={() => setShowModal(true)} className='text-white mr-2 border py-2 px-5 bg-teal-500  text-lg font-semibold hover:bg-teal-700 rounded'>New</button>
                     </div>
 
                 </div>
                 {wallets.length > 0 ? (
-                    < WalletTable wallets={wallets} setWallets={setWallets} />
+                    < WalletTable wallets={wallets} setWallets={setWallets} setChangesSaved={setChangesSaved}/>
                 ) : (
                     <h2 className='text-2xl font-bold'>No Wallets Found</h2>
                 )}
