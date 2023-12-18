@@ -32,6 +32,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
     }, [showAlert]); 
 
     const handleClose = () => {
+        
         setName('');
         setAddress('');
         setAlert(false);
@@ -41,6 +42,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("handleSubmit");
         if (name === '') {
             setShowAlert(true);
             setAlert(true);
@@ -99,14 +101,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
                                         <h3 className="text-3xl font-semibold">
                                             New Wallet to track
                                         </h3>
-                                        <button
-                                            className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                            onClick={() => setShowModal(false)}
-                                        >
-                                            <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                ×
-                                            </span>
-                                        </button>
+
                                     </div>
                                     {/*body*/}
                                     <div className="flex flex-col items-center justify-center mt-16">
@@ -142,14 +137,14 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
                                     {/*footer*/}
                                     <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                                         <button
-                                            className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 focus:border focus:border-red-600"
                                             type="button"
                                             onClick={handleClose}
                                         >
                                             Close
                                         </button>
                                         <button
-                                            className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 focus:bg-emerald-100"
                                             type="submit"
 
                                         >

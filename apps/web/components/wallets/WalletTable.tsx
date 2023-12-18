@@ -32,7 +32,17 @@ const WalletTable = ({ wallets, setWallets, setChangesSaved }: Props) => {
     }
 
     const deleteWallet = (id: number) => {
-        setWallets(wallets.filter(w => w.id !== id));
+        const walletToDelete = wallets.find(w => w.id === id);
+        if (!walletToDelete) {
+            return; }
+        const updatedWallets = wallets.filter(w => w.id !== id);
+        const adjustedWallets = updatedWallets.map(w => {
+            if (w.preference > walletToDelete.preference) {
+                return { ...w, preference: w.preference - 1 };
+            }
+            return w;
+        });
+        setWallets(adjustedWallets);
     }
     return (
         <div className="relative overflow-x-auto mt-5">
