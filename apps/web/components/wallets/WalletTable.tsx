@@ -11,12 +11,11 @@ const WalletTable = ({ wallets, setWallets }: Props) => {
     
     const swapWallets = (index1: number, index2: number) => {
         let newWallets: IWallet[] = [...wallets];
-        let wallet1 = newWallets[index1];
-        let wallet2 = newWallets[index2];
+        let wallet1: IWallet = newWallets[index1];
+        let wallet2: IWallet = newWallets[index2];
         const tempPreference = wallet1.preference;
         wallet1.preference = wallet2.preference;
         wallet2.preference = tempPreference;
-
         [newWallets[index1], newWallets[index2]] = [wallet2, wallet1];
         setWallets(newWallets);
     };
