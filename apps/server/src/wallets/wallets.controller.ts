@@ -40,6 +40,7 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Delete('/:walletId')
   removeWallet(@Param('walletId') walletId: string, @Request() req: any) {
+    console.log('remove');
     return this.walletService.removeWallet(
       parseInt(walletId),
       parseInt(req.user.id),

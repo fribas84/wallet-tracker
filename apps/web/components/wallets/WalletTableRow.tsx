@@ -1,7 +1,7 @@
 import { IWallet } from '@/types/Wallet'
 import React, { useState } from 'react'
 import ModalDetails from './ModalDetails';
-
+import DeleteModal from './DeleteModal';
 interface Props {
     wallet: IWallet;
     moveUp: (preference: number) => void;
@@ -29,7 +29,7 @@ const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount }: Props) => {
                 <button className="text-white mr-2 border py-2 px-5 bg-yellow-500 hover:bg-yellow-700  rounded">
                     Edit
                 </button>
-                <button className="text-white mr-2 border py-2 px-5 bg-red-500 hover:bg-red-700 rounded ">
+                <button className="text-white mr-2 border py-2 px-5 bg-red-500 hover:bg-red-700 rounded " onClick={()=>setShowRemove(true)} >
                     Remove
                 </button>
                 {wallet.preference > 0 && (
@@ -46,6 +46,7 @@ const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount }: Props) => {
           </td>
             <td>
                 <ModalDetails name={wallet.name} showModalDetails={showDetails} setShowModalDetails={setShowDetails} id={wallet.id} />
+                <DeleteModal name={wallet.name} showModal={showRemove} setShowModal={setShowRemove} id={wallet.id} />
             </td>
         </tr>
     )

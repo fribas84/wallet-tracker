@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Wallet } from './entities/wallet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { getBalance, getIsOld, getPrice } from 'src/helpers/balanceHelper';
 import { weiToFiat } from './interfaces';
 
@@ -58,7 +58,15 @@ export class WalletsService {
     if (!wallet) {
       return false;
     }
+    const removedWalletPreference: number = wallet.preference;
     await this.walletRepository.remove(wallet);
+    const walletsToUpdate = await this.walletRepository.find({
+      where: { userId: userId, preference: MoreThan(removedWalletPreference) },
+    });
+    for (const walletToUpdate of walletsToUpdate) {
+      walletToUpdate.preference -= 1;
+      await this.walletRepository.save(walletToUpdate);
+    }
     return true;
   }
 
