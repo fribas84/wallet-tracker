@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import Alert from "./Alert";
+import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
 import axios from "axios";
 
@@ -43,7 +43,7 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
         setShowAlert(false);
         setAlert(false);
         setAlertMsg('');
-        try{
+        try {
             const url = `http://localhost:4000/api/v1/wallets`
             const token = localStorage.getItem('token');
             if (!token) {
@@ -63,7 +63,7 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
             setShowModal(false);
             setNewWallet(true);
         }
-        catch(err){
+        catch (err) {
             console.log(err);
         }
     };
@@ -78,8 +78,8 @@ export default function ModalNewWallet({ showModal, setShowModal, setNewWallet }
                             {/*content*/}
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 {/*header*/}
-                                {showAlert && <Alert error={alert} msg={alertMsg} /> }
-                                <form onSubmit={handleSubmit}>
+                                {showAlert && <Alert error={alert} msg={alertMsg} />}
+                                <form >
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                                         <h3 className="text-3xl font-semibold">
                                             New Wallet to track

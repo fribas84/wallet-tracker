@@ -5,12 +5,12 @@ import { ReactNode, SetStateAction, createContext, useContext, useEffect, useSta
 
 import { useRouter } from 'next/navigation'
 import axios from "axios";
-import { UserProfile } from "@/types/UserProfile";
+import { IUserProfile } from "@/types/UserProfile";
 
 
 type authContextType = {
-    user: UserProfile;
-    setUser: Dispatch<SetStateAction<UserProfile>>;
+    user: IUserProfile;
+    setUser: Dispatch<SetStateAction<IUserProfile>>;
     loading: boolean;
     logout: () => void;
     login: (email: string, password: string) => Promise<void>;
@@ -38,7 +38,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: Props) {
-    const [user, setUser] = useState<UserProfile>({ id: '', email: '' });
+    const [user, setUser] = useState<IUserProfile>({ id: '', email: '' });
     const [loading, setLoading] = useState<boolean>(true);
     const [accessToken, setAccessToken] = useState<string>('');
 
@@ -98,7 +98,7 @@ export function AuthProvider({ children }: Props) {
         logout,
         login
     }
-    console.log("auth context: ",user);
+    console.log("auth context: ", user);
     return (
         <>
             <AuthContext.Provider value={value}>

@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React, { use, useEffect, useState } from 'react'
 import { useRouter } from "next/navigation";
-import { UserProfile } from '@/types/UserProfile';
+import { IUserProfile } from '@/types/UserProfile';
 import { useAuth } from '@/context/authContext';
 
 interface Props {
