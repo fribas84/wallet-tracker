@@ -6,7 +6,6 @@ import {
   NotFoundException,
   UnauthorizedException,
   Logger,
-  ServiceUnavailableException,
 } from '@nestjs/common';
 import { Wallet } from './entities/wallet.entity';
 import { Rates } from './entities/rates.entity';
@@ -102,7 +101,7 @@ export class WalletsService {
       };
     } catch (error) {
       this.logger.error(`Failed to retrieve wallet balance: ${error.message}`);
-      throw new ServiceUnavailableException(
+      throw new InternalServerErrorException(
         'Failed to retrieve wallet balance',
       );
     }

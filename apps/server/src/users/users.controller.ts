@@ -10,6 +10,9 @@ import {
   Get,
   UseGuards,
   Request,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,17 +25,27 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('signup')
-  create(@Body() body: CreateUserDto) {
-    return this.usersService.create(body.email, body.password);
-  }
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.usersService.update(parseInt(id), body);
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(
+      createUserDto.email,
+      createUserDto.password,
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(parseInt(id));
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(id, updateUserDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Request() req: any) {
+    return this.usersService.remove(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
