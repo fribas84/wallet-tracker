@@ -1,10 +1,10 @@
 "use client";
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
+import '../globals.css'
 import { Hidratation } from '@/components/Hidratation'
 import Navbar from '@/components/Navbar'
-import { AuthProvider } from '../context/authContext'
+import { AuthProvider } from '../../context/authContext'
 import { useAuth } from "@/context/authContext";
 import { Providers } from './providers'
 const inter = Inter({ subsets: ['latin'] })

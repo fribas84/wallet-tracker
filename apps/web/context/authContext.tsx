@@ -71,6 +71,7 @@ export function AuthProvider({ children }: Props) {
     }, [accessToken])
 
     const login = async (email: string, password: string) => {
+        console.log('login')
         try {
             const url = `http://localhost:4000/api/v1/auth/login`;
             const data = { email, password };

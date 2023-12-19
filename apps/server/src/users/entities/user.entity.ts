@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
+import { before } from 'node:test';
 
 @Entity()
 export class User {
@@ -26,14 +27,26 @@ export class User {
   })
   isConfirmed: boolean;
 
-  // @Column({
-  //   nullable: true,
-  // })
-  // access_token: string;
+  @Column({
+    nullable: true,
+  })
+  confirmationToken: string;
 
   @BeforeInsert()
   beforeInsertActions() {
     this.isConfirmed = false;
+  }
+
+  @BeforeInsert()
+  async createConfirmationToken() {
+    const rnd = (
+      len: number,
+      chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    ) =>
+      [...Array(len)]
+        .map(() => chars.charAt(Math.floor(Math.random() * chars.length)))
+        .join('');
+    this.confirmationToken = rnd(6);
   }
 
   @BeforeInsert()

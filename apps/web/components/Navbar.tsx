@@ -15,10 +15,7 @@ const Navbar = ({ }: Props) => {
     const { user, logout, loading } = useAuth();
     const router = useRouter();
     
-    
-    if (loading) {
-        return <div>Loading...</div>
-    }
+
     return (
         <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6 rounded shadow-2xl m-5">
             <div className="flex items-center flex-shrink-0 text-white mr-6">

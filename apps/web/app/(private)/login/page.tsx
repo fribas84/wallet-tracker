@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react'
 import Link from 'next/link';
-import Alert from '../../components/Alert';
+import Alert from '../../../components/Alert';
 import axios from 'axios';
 import { useRouter } from "next/navigation"
 import { useAuth } from '@/context/authContext';

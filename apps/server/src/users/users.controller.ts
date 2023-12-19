@@ -11,6 +11,7 @@ import {
   Request,
   HttpCode,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -22,6 +23,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ConfirmUserDto } from './dto/confirm-user.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -78,5 +80,17 @@ export class UsersController {
   @Get()
   getProfile(@Request() req: any) {
     return this.usersService.findOneByEmail(req.user.email);
+  }
+
+  @ApiOperation({ summary: 'Confirm user email' })
+  @ApiResponse({ status: 200, description: 'Email confirmed successfully.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Post('confirm/:token')
+  confirmEmail(
+    @Param('token') token: string,
+    @Body() confirmUserDto: ConfirmUserDto,
+  ) {
+    return this.usersService.confirmEmail(token, confirmUserDto.email);
   }
 }
