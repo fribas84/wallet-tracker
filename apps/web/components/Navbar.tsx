@@ -15,7 +15,7 @@ const Navbar = ({ }: Props) => {
     const { user, logout, loading } = useAuth();
     const router = useRouter();
     
-    console.log("navbar", user);
+    
     if (loading) {
         return <div>Loading...</div>
     }

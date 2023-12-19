@@ -49,10 +49,10 @@ const Wallet = (props: Props) => {
                     }
                 }
                 const response = await axios.get(url, config);
-                console.log(response.data)
                 const walletsData = response.data.sort((a: IWallet, b: IWallet) => a.preference - b.preference);
                 setWallets(walletsData);
             } catch (error) {
+                //TODO error handling
                 console.log(error);
             }
         }
@@ -64,8 +64,6 @@ const Wallet = (props: Props) => {
     }
 
     const handleSavePreference = async () => {
-        console.log("inside handleSavePreference");
-        console.log(wallets);
         try {
             const url = `http://localhost:4000/api/v1/wallets/edit/multiple`
             const token = localStorage.getItem('token');
@@ -79,7 +77,6 @@ const Wallet = (props: Props) => {
                 }
             }
             const response = await axios.patch(url, { wallets: wallets }, config);
-            console.log(response.data)
             setAlertError(false);
             setAlertMessage(response.data.message);
             setShowAlert(true);
@@ -88,7 +85,7 @@ const Wallet = (props: Props) => {
 
         } catch (error) {
             setAlertError(true);
-            setAlertMessage(error.message);
+            setAlertMessage(error.message || 'Error occured while saving changes');
             setShowAlert(true);
         }
     }

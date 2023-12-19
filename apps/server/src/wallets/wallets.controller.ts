@@ -29,8 +29,6 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   addWallet(@Body() body: AddWalletDto, @Request() req: any) {
-    console.log('container');
-    console.log(body);
     return this.walletService.createWallet(
       body.name,
       body.address,
@@ -41,7 +39,6 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Delete('/:walletId')
   removeWallet(@Param('walletId') walletId: string, @Request() req: any) {
-    console.log('remove');
     return this.walletService.removeWallet(
       parseInt(walletId),
       parseInt(req.user.id),

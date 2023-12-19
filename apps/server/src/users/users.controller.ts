@@ -39,7 +39,6 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   getProfile(@Request() req: any) {
-    console.log(req.user);
     return this.usersService.findOneByEmail(req.user.email);
   }
 }

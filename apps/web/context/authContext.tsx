@@ -61,7 +61,6 @@ export function AuthProvider({ children }: Props) {
                 const url = `http://localhost:4000/api/v1/users`
                 const response = await axios.get(url, config);
                 const profileData = response.data;
-                console.log("try ", profileData);
                 setUser(profileData);
             } catch (error) {
                 setUser({ id: '', email: '' });
@@ -98,7 +97,6 @@ export function AuthProvider({ children }: Props) {
         logout,
         login
     }
-    console.log("auth context: ", user);
     return (
         <>
             <AuthContext.Provider value={value}>

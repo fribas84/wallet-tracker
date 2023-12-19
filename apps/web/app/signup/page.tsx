@@ -62,7 +62,6 @@ const Signup = (props: Props) => {
         }
       }
       const response = axios.post(url, { email, password }, config);
-      console.log(response);
       setEmail('');
       setPassword('');
       setPassword2('');
@@ -73,7 +72,6 @@ const Signup = (props: Props) => {
 
 
     } catch (error) {
-      console.log(error)
       setAlertMsg(error.response.data.error);
       setAlert(true);
       setShowAlert(true);

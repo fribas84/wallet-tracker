@@ -42,7 +42,6 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("handleSubmit");
         if (name === '') {
             setShowAlert(true);
             setAlert(true);
@@ -81,6 +80,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
             
         }
         catch (err) {
+            //TODO error handling
             console.log(err);
         }
     };

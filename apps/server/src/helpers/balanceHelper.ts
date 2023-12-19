@@ -2,10 +2,8 @@ import axios from 'axios';
 
 const getBalance = async (wallet: string): Promise<number> => {
   try {
-    console.log('inside getbalance: ', wallet);
     const url: string = `https://api.etherscan.io/api?module=account&action=balance&address=${wallet}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
     const response = await axios.get(url);
-    console.log(response.data.result);
     const weiToEther = Number(BigInt(response.data.result) / BigInt(1e18));
     return weiToEther;
   } catch (error) {

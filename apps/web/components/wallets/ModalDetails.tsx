@@ -59,9 +59,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
             }
             try {
                 const response = await axios.get(url, config);
-                console.log("response", response);
                 const balanceData = response.data;
-                console.log(balanceData);
                 setBalance(balanceData.balance);
                 setIsOld(balanceData.isOld);
                 setAlertError(false);
@@ -86,9 +84,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
             }
             try {
                 const response = await axios.get(url, config);
-                console.log("response", response);
                 const rates = response.data;
-                console.log("rates", rates);
                 setEur(rates.eur);
                 setUsd(rates.usd);
                 setAlertError(false);

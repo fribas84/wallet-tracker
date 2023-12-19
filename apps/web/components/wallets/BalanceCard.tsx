@@ -14,10 +14,8 @@ const BalanceCard = ({ balance, setBalance }: Props) => {
             return eth * 1e18;
         }
         if (!wei) {
-            console.log("balance in eth", balance)
             setDisplayedBalance(balance);
         } else {
-            console.log("ethtowei(balance)", ethToWei(balance));
             setDisplayedBalance(ethToWei(balance));
         }
 

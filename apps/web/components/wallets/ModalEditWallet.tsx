@@ -43,7 +43,6 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
   }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("handleSubmit");
     if (name === '') {
       setShowAlert(true);
       setAlert(true);
@@ -74,7 +73,6 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
       }
       const body = { name: name, address: address };
       const response = await axios.post(url, body, config);
-      console.log(response);
       setName('');
       setAddress('');
       updateWallet(response.data);
@@ -82,6 +80,7 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
 
     }
     catch (err) {
+      //TODO error handling
       console.log(err);
     }
   };
