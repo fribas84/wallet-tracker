@@ -2,7 +2,9 @@ import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller()
 export class AppController {
   constructor(
@@ -10,11 +12,13 @@ export class AppController {
     private authService: AuthService,
   ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
+  @ApiOperation({ summary: 'User login' })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully logged in.',
+    type: String,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Req() req: any) {
