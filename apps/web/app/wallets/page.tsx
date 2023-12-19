@@ -51,9 +51,13 @@ const Wallet = (props: Props) => {
                 const response = await axios.get(url, config);
                 const walletsData = response.data.sort((a: IWallet, b: IWallet) => a.preference - b.preference);
                 setWallets(walletsData);
+                setAlertError(false);
+                setAlertMessage('');
+                setShowAlert(false);
             } catch (error) {
-                //TODO error handling
-                console.log(error);
+                setAlertError(true);
+                setAlertMessage(error.response.data.error || 'Error occured while fetching wallets');
+                setShowAlert(true);
             }
         }
         fecthWallets();
@@ -78,14 +82,14 @@ const Wallet = (props: Props) => {
             }
             const response = await axios.patch(url, { wallets: wallets }, config);
             setAlertError(false);
-            setAlertMessage(response.data.message);
+            setAlertMessage("Preference order saved");
             setShowAlert(true);
             setChangesSaved(true);
 
 
         } catch (error) {
             setAlertError(true);
-            setAlertMessage(error.message || 'Error occured while saving changes');
+            setAlertMessage(error.response.data.error || 'Error occured while saving changes');
             setShowAlert(true);
         }
     }

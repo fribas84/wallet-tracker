@@ -3,8 +3,6 @@ import Alert from "../Alert";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-//TODO improce error handling 
-
 interface Props {
     showModal: boolean,
     setShowModal: Dispatch<SetStateAction<boolean>>
@@ -54,7 +52,7 @@ export default function ModalNewWallet({ showModal, setShowModal, id, name, dele
         } catch (error) {
             setShowAlert(true);
             setAlert(true);
-            setAlertMsg(error.response.error || 'Error deleting wallet');
+            setAlertMsg(error.response.data.error || 'Error deleting wallet');
         }
 
     }

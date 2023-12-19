@@ -3,6 +3,8 @@ import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
 import axios from "axios";
 import { IWallet } from "@/types/Wallet";
+
+
 //TODO logic and everything
 //TODO improce error handling 
 
@@ -80,8 +82,9 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
 
     }
     catch (err) {
-      //TODO error handling
-      console.log(err);
+      setShowAlert(true);
+      setAlert(true);
+      setAlertMsg(err.response.data.error || 'Error creating user');;
     }
   };
   return (

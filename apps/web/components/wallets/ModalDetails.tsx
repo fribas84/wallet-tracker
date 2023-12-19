@@ -67,7 +67,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
                 setLoading(false);
                 setAlertError(true);
                 setShowAlert(true);
-                setAlertMsg(error?.response?.data.message || 'Something went wrong');
+                setAlertMsg(error.response.data.error || 'Something went wrong');
             }
         }
         const fetchRates = async () => {

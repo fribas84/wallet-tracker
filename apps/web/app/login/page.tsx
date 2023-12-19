@@ -49,7 +49,7 @@ const Login = (props: Props) => {
     }
     catch (err) {
         setShowAlert(true);
-        setAlertMsg(err.message || 'Something went wrong');
+      setAlertMsg(error.response.data.error || 'Something went wrong');
       }
   };
 
