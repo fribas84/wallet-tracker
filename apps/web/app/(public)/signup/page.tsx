@@ -72,7 +72,7 @@ const Signup = (props: Props) => {
 
 
     } catch (error) {
-      setAlertMsg(error.response.data.error);
+      setAlertMsg(error.response.data.message || 'Something went wrong');
       setAlert(true);
       setShowAlert(true);
     }
@@ -82,6 +82,7 @@ const Signup = (props: Props) => {
     <div className="flex flex-col items-center justify-center mt-16">
       <div className="w-2/3 p-8 bg-white rounded shadow-md">
         {showAlert && <Alert error={alert} msg={alertMsg} />}
+        <h1 className='font-bold text-xl text-center'>Sign up</h1>
         <form className="mb-4" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">

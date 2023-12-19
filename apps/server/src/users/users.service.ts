@@ -7,7 +7,7 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { emailRegister } from 'src/helpers/emailHelper';
+import { emailRecoverPassword, emailRegister } from 'src/helpers/emailHelper';
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
@@ -19,7 +19,6 @@ export class UsersService {
     if (existingUser) {
       throw new BadRequestException('User already exists');
     }
-
     const user = this.repo.create({ email, password });
     await this.repo.save(user);
     await emailRegister(user.email, user.confirmationToken);
@@ -54,18 +53,45 @@ export class UsersService {
   }
 
   async confirmEmail(token: string, email: string) {
-    const user = await this.repo.findOne({
-      where: { confirmationToken: token },
-    });
+    const user = await this.repo.findOne({ where: { email } });
+    this.logger.log(user?.email);
+    this.logger.log(user?.confirmationToken);
+    this.logger.log(token);
     if (!user) {
       throw new NotFoundException('User not found or invalid token');
     }
-    if (user.confirmationToken !== token || user.email !== email) {
-      throw new BadRequestException('Invalid token or email');
+    if (user.confirmationToken !== token) {
+      throw new BadRequestException('Invalid token');
     }
 
     user.confirmationToken = '';
     user.isConfirmed = true;
+    return this.repo.save(user);
+  }
+
+  async requestPasswordRecover(email: string) {
+    const user = await this.repo.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    user.confirmationToken = await user.createTempToken();
+    await this.repo.save(user);
+    await emailRecoverPassword(user.email, user.confirmationToken);
+    return user;
+  }
+
+  async recoverPassword(token: string, email: string, password: string) {
+    const user = await this.repo.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    this.logger.log(token);
+    this.logger.log(user.confirmationToken);
+    if (user.confirmationToken !== token) {
+      throw new BadRequestException('Invalid token');
+    }
+    user.confirmationToken = '';
+    user.password = password;
     return this.repo.save(user);
   }
 }

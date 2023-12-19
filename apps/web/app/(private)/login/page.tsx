@@ -47,9 +47,9 @@ const Login = (props: Props) => {
     try {
       await login(email, password);
     }
-    catch (err) {
-        setShowAlert(true);
-      setAlertMsg(error.response.data.error || 'Something went wrong');
+    catch (error) {
+      setShowAlert(true);
+      setAlertMsg(error.message|| 'Something went wrong');
       }
   };
 
@@ -57,6 +57,7 @@ const Login = (props: Props) => {
     <div className="flex flex-col items-center justify-center mt-16">
       <div className="w-2/3 p-8 bg-white rounded shadow-md">
         {showAlert && <Alert error={true} msg={alertMsg} />}
+        <h1 className='font-bold text-xl text-center'>Login</h1>
         <form className="mb-4" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">

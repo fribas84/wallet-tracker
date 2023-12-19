@@ -23,7 +23,6 @@ export class User {
 
   @Column({
     nullable: false,
-    select: false,
   })
   isConfirmed: boolean;
 
@@ -39,14 +38,7 @@ export class User {
 
   @BeforeInsert()
   async createConfirmationToken() {
-    const rnd = (
-      len: number,
-      chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    ) =>
-      [...Array(len)]
-        .map(() => chars.charAt(Math.floor(Math.random() * chars.length)))
-        .join('');
-    this.confirmationToken = rnd(6);
+    this.confirmationToken = await this.createTempToken();
   }
 
   @BeforeInsert()
@@ -57,5 +49,16 @@ export class User {
 
   async comparePassword(attempt: string): Promise<boolean> {
     return await bcrypt.compare(attempt, this.password);
+  }
+
+  async createTempToken() {
+    const rnd = (
+      len: number,
+      chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    ) =>
+      [...Array(len)]
+        .map(() => chars.charAt(Math.floor(Math.random() * chars.length)))
+        .join('');
+    return rnd(6);
   }
 }

@@ -24,6 +24,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ConfirmUserDto } from './dto/confirm-user.dto';
+import { PasswordRecoverDto } from './dto/passwordRecover.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -92,5 +93,36 @@ export class UsersController {
     @Body() confirmUserDto: ConfirmUserDto,
   ) {
     return this.usersService.confirmEmail(token, confirmUserDto.email);
+  }
+
+  @ApiOperation({ summary: 'Request password recovery' })
+  @ApiResponse({
+    status: 200,
+    description: 'Recovery email sent successfully.',
+  })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Post('recover')
+  requestPasswordRecover(@Body() passwordRecoverDto: PasswordRecoverDto) {
+    return this.usersService.requestPasswordRecover(passwordRecoverDto.email);
+  }
+
+  @ApiOperation({ summary: 'Request password recovery' })
+  @ApiResponse({
+    status: 200,
+    description: 'Recovery email sent successfully.',
+  })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Post('recover/:token')
+  recoverPassword(
+    @Param('token') token: string,
+    @Body() createUserDto: CreateUserDto,
+  ) {
+    return this.usersService.recoverPassword(
+      token,
+      createUserDto.email,
+      createUserDto.password,
+    );
   }
 }

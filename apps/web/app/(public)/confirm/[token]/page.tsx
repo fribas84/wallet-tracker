@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { token: string } }) {
             return
         } 
         try {
-            const url = `http://localhost:4000/api/v1/users/confirm/123`;
+            const url = `http://localhost:4000/api/v1/users/confirm/${params.token}`;
             console.log(url);
             const response = await axios.post(url, {email});
             const data = await response.data;
@@ -43,7 +43,7 @@ export default function Page({ params }: { params: { token: string } }) {
     return (
         <div className="flex flex-col items-center justify-center mt-16">
             <div className="w-2/3 p-8 bg-white rounded shadow-md">
-                {showAlert && <Alert error={true} msg={alertMsg} />}
+                {showAlert && <Alert error={alertError} msg={alertMsg} />}
                 <h1 className='font-bold text-black text-center text-2xl'> Enter your Email to confirm your account</h1>
                 <form className="mb-4" onSubmit={handleSubmit}>
                     <div className="mb-4">

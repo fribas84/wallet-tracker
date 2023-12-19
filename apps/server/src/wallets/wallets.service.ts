@@ -57,13 +57,13 @@ export class WalletsService {
         preference: wallets.length,
       });
       return this.walletRepository.save(wallet);
-    } catch (err) {
-      if (err.code === 'SQLITE_CONSTRAINT') {
+    } catch (error) {
+      if (error.code === 'SQLITE_CONSTRAINT') {
         throw new ConflictException(
           'A wallet with the same name or address already exists for this user.',
         );
       }
-      this.logger.error(`Error creating wallet: ${err.message}`);
+      this.logger.error(`Error creating wallet: ${error.message}`);
       throw new InternalServerErrorException('Failed to create wallet');
     }
   }

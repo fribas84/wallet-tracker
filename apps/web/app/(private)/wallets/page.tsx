@@ -56,7 +56,7 @@ const Wallet = (props: Props) => {
                 setShowAlert(false);
             } catch (error) {
                 setAlertError(true);
-                setAlertMessage(error.response.data.error || 'Error occured while fetching wallets');
+                setAlertMessage(error.response.data.message || 'Error occured while fetching wallets');
                 setShowAlert(true);
             }
         }
@@ -89,7 +89,7 @@ const Wallet = (props: Props) => {
 
         } catch (error) {
             setAlertError(true);
-            setAlertMessage(error.response.data.error || 'Error occured while saving changes');
+            setAlertMessage(error.response.data.message || 'Error occured while saving changes');
             setShowAlert(true);
         }
     }

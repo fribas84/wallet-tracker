@@ -79,7 +79,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
             setShowModal(false);
             
         }
-        catch (err) {
+        catch (error) {
             //TODO error handling
             console.log(err);
         }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 
@@ -8,20 +8,31 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
+  private readonly logger = new Logger(AuthService.name);
 
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findOneByEmail(email);
-    if (user && (await user.comparePassword(password))) {
-      const { ...result } = user;
-
-      return result;
+    if (!user) {
+      throw new UnauthorizedException('User not found');
     }
-    return null;
+
+    if (!user.isConfirmed) {
+      throw new UnauthorizedException('User is not confirmed');
+    }
+
+    const passwordMatches = await user.comparePassword(password);
+    if (!passwordMatches) {
+      throw new UnauthorizedException('Invalid credentials')
+    }
+
+    this.logger.log(`User authenticated: ${email}`);
+    return user;
   }
 
+
   async generateAccessToken(_email: string) {
-    const { email, id } = await this.usersService.findOneByEmail(_email);
-    const payload = { email: email, id: id };
+    const user = await this.usersService.findOneByEmail(_email);
+    const payload = { email: user.email, id: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };

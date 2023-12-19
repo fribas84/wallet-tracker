@@ -81,10 +81,10 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
       setShowModal(false);
 
     }
-    catch (err) {
+    catch (error) {
       setShowAlert(true);
       setAlert(true);
-      setAlertMsg(err.response.data.error || 'Error creating user');;
+      setAlertMsg(error.response.data.error || 'Error creating user');;
     }
   };
   return (
