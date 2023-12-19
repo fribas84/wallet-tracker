@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   async generateAccessToken(_email: string) {
-    const { email, id  } = await this.usersService.findOneByEmail(_email);
+    const { email, id } = await this.usersService.findOneByEmail(_email);
     const payload = { email: email, id: id };
     console.log('payload');
     console.log(payload);

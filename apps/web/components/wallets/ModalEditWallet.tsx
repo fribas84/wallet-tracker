@@ -3,7 +3,7 @@ import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
 import axios from "axios";
 import { IWallet } from "@/types/Wallet";
-
+//TODO logic and everything
 //TODO improce error handling 
 
 interface Props {

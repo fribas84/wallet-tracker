@@ -7,7 +7,6 @@ interface Props {
 
 const BalanceCard = ({ balance, setBalance }: Props) => {
     const [wei, setWei] = useState<boolean>(true);
-    const [balanceEditable, setBalanceEditable] = useState<boolean>(false);
     const [displayedBalance, setDisplayedBalance] = useState<number>(0);
 
     useEffect(() => {
@@ -24,9 +23,9 @@ const BalanceCard = ({ balance, setBalance }: Props) => {
 
     }, [balance, wei])
     return (
-        <div className='mr-2 w-1/2 bg-white shadow-xl rounded-lg items-center p-5'>
+        <div className='w-full bg-white shadow-xl rounded-lg'>
             <div className='flex justify-between border-b-2'>
-                <h1 className='text-2xl font-bold mx-5'>Balance</h1>
+                <h1 className='text-2xl font-bold mx-5 my-2'>Balance</h1>
                 <div>
                     <button
                         className='my-2 bg-teal-500 text-white text-xl py-2 px-4 leading-none rounded hover:bg-teal-600 mx-2'
@@ -34,24 +33,21 @@ const BalanceCard = ({ balance, setBalance }: Props) => {
                     >
                         {wei ? 'eth' : 'wei'}
                     </button>
-                    <button
-                        className='my-2 bg-teal-500 text-white text-xl py-2  px-4 leading-none rounded hover:bg-teal-600 mx-2'
-                        onClick={() => setBalanceEditable(!balanceEditable)}
-                    >
-                        Edit
-                    </button>
+                    
                 </div>
             </div>
-            <div className="flex items-center my-5 mx-10">
+            <div className="flex items-center my-10 mx-10">
+                <label htmlFor='balance' className="text-lg font-bold text-gray-700 mr-2">Balance</label>
                 <input
+                    id="balance"
                     type='number'
                     pattern="([0-9]{1,3}).([0-9]{1,3})"
                     value={displayedBalance}
                     onChange={(e) => setBalance(Number(e.target.value))}
-                    disabled={!balanceEditable}
-                    className={`p-2 border text-lg text-left ${balanceEditable ? 'border-teal-500' : 'border-gray-300'} rounded-l w-3/4`}
+                    disabled={true}
+                    className='p-2 border text-lg text-left border-teal-500  rounded-l w-3/4'
                 />
-                <span className={`font-bold text-white  bg-teal-500 text-lg border py-2 px-4 first-letter:${balanceEditable ? 'border-teal-500' : 'border-gray-300'} rounded-l w-1/5`}>
+                <span className='font-bold text-white  bg-teal-500 text-lg border py-2 px-4 border-teal-500 rounded-l w-1/5'>
                     {wei ? 'wei' : 'eth'}
                 </span>
 

@@ -14,7 +14,7 @@ import { AddWalletDto } from './dtos/addWallet.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { WalletsService } from './wallets.service';
 import { UpdateWalletsDTO } from './dtos/updateWallets.dto';
-import { UpdateWalletDTO } from './dtos/updateWallet.dto';
+import { UpdateRateDto } from './dtos/updateRate.dto';
 
 @Controller('wallets')
 export class WalletsController {
@@ -57,15 +57,14 @@ export class WalletsController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Patch('/edit/:walletId')
-  edit(@Body() body: UpdateWalletDTO, @Request() req: any) {
-    return this.walletService.updateWallets(
-      body.,
-      parseInt(req.user.id),
-    );
-  }
-
+  // @UseGuards(JwtAuthGuard)
+  // @Patch('/edit/:walletId')
+  // edit(@Body() body: UpdateWalletDTO, @Request() req: any) {
+  //   return this.walletService.updateWallets(
+  //     body.,
+  //     parseInt(req.user.id),
+  //   );
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('balance/:walletId')
@@ -74,5 +73,17 @@ export class WalletsController {
       parseInt(walletId),
       parseInt(req.user.id),
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/rates')
+  getRates() {
+    return this.walletService.getRates();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/rates')
+  addRate(@Body() body: UpdateRateDto) {
+    return this.walletService.addRates(body);
   }
 }

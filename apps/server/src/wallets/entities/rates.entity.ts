@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
 
 @Entity()
 export class Rates {
@@ -6,11 +6,16 @@ export class Rates {
   id: number;
 
   @Column()
-  timestamp: number;
-
-  @Column()
   eur: number;
 
   @Column()
   usd: number;
+
+  @Column({ type: 'bigint', nullable: true })
+  createdAt: number;
+
+  @BeforeInsert()
+  setCreationDate() {
+    this.createdAt = Math.floor(Date.now() / 1000);
+  }
 }

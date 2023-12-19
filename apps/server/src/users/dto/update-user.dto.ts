@@ -12,6 +12,4 @@ export class UpdateUserDto {
   @IsBoolean()
   @IsOptional()
   isConfirmed: boolean;
-
-
 }

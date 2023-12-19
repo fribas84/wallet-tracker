@@ -1,14 +1,16 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Wallet } from './entities/wallet.entity';
+import { Rates } from './entities/rates.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
-import { getBalance, getIsOld, getPrice } from 'src/helpers/balanceHelper';
-import { weiToFiat } from './interfaces';
+import { getBalance, getIsOld, getRates } from 'src/helpers/balanceHelper';
+import { UpdateRateDto } from './dtos/updateRate.dto';
 
 @Injectable()
 export class WalletsService {
   constructor(
     @InjectRepository(Wallet) private walletRepository: Repository<Wallet>,
+    @InjectRepository(Rates) private ratesRepository: Repository<Rates>,
   ) {}
 
   //TODO error handling entity contraints
@@ -40,13 +42,8 @@ export class WalletsService {
     }
     const balance: number = await getBalance(wallet.address);
     const isOld: boolean = await getIsOld(wallet.address);
-    const weiToFiat: weiToFiat = await getPrice(balance);
     return {
       balance: balance,
-      usd: weiToFiat.usd,
-      eur: weiToFiat.eur,
-      rateUsd: weiToFiat.rateUsd,
-      rateEur: weiToFiat.rateEur,
       isOld: isOld,
     };
   }
@@ -86,5 +83,29 @@ export class WalletsService {
       await this.walletRepository.save(existingWallet);
     }
     return { status: 'success', message: 'Wallets updated successfully' };
+  }
+
+  async getRates() {
+    const rates = await this.ratesRepository
+      .createQueryBuilder('rates')
+      .orderBy('createdAt', 'DESC')
+      .getOne();
+    if (!rates || rates.createdAt < Math.floor(Date.now() / 1000) - 300) {
+      const _rates = await getRates();
+      const newRates = await this.ratesRepository.create();
+      newRates.eur = _rates.eur;
+      newRates.usd = _rates.usd;
+      await this.ratesRepository.save(newRates);
+      return _rates;
+    }
+    return rates;
+  }
+
+  async addRates(dto: UpdateRateDto) {
+    const newRates = await this.ratesRepository.create();
+    const _rates = await getRates();
+    newRates.eur = dto.eur !== undefined ? dto.eur : _rates.eur;
+    newRates.usd = dto.usd !== undefined ? dto.usd : _rates.usd;
+    return await this.ratesRepository.save(newRates);
   }
 }

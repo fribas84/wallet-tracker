@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { weiToFiat } from '../wallets/interfaces';
 
 const getBalance = async (wallet: string): Promise<number> => {
   try {
@@ -33,22 +32,19 @@ const getIsOld = async (wallet: string): Promise<boolean> => {
   }
 };
 
-const getPrice = async (balance: number): Promise<weiToFiat> => {
+const getRates = async (): Promise<{ usd: number; eur: number }> => {
   try {
     const url =
       'https://min-api.cryptocompare.com/data/price?fsym=eth&tsyms=usd,eur';
     const response = await axios.get(url);
-    const etherToDollar = balance * response.data.USD;
-    const etherToEuro = balance * response.data.EUR;
+
     return {
-      usd: etherToDollar,
-      eur: etherToEuro,
-      rateUsd: Number(response.data.USD),
-      rateEur: Number(response.data.EUR),
+      usd: response.data.USD,
+      eur: response.data.EUR,
     };
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export { getBalance, getIsOld, getPrice };
+export { getBalance, getIsOld, getRates };
