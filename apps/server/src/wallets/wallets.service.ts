@@ -5,6 +5,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
+  Logger,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { Wallet } from './entities/wallet.entity';
 import { Rates } from './entities/rates.entity';
@@ -15,6 +17,8 @@ import { UpdateRateDto } from './dtos/updateRate.dto';
 
 @Injectable()
 export class WalletsService {
+  private readonly logger = new Logger(WalletsService.name);
+
   constructor(
     @InjectRepository(Wallet) private walletRepository: Repository<Wallet>,
     @InjectRepository(Rates) private ratesRepository: Repository<Rates>,
@@ -47,22 +51,21 @@ export class WalletsService {
     }
     try {
       const wallets = await this.getWallets(userId);
-      const wallet = await this.walletRepository.create();
-      wallet.name = name;
-      wallet.address = address;
-      wallet.userId = userId;
-      wallet.preference = wallets.length;
+      const wallet = this.walletRepository.create({
+        name,
+        address,
+        userId,
+        preference: wallets.length,
+      });
       return this.walletRepository.save(wallet);
     } catch (err) {
-      if (
-        err.code ===
-        'SQLITE_CONSTRAINT' /* or relevant error code for your DB */
-      ) {
+      if (err.code === 'SQLITE_CONSTRAINT') {
         throw new ConflictException(
           'A wallet with the same name or address already exists for this user.',
         );
       }
-      throw err;
+      this.logger.error(`Error creating wallet: ${err.message}`);
+      throw new InternalServerErrorException('Failed to create wallet');
     }
   }
 
@@ -70,6 +73,7 @@ export class WalletsService {
     try {
       return await this.walletRepository.find({ where: { userId } });
     } catch (error) {
+      this.logger.error(`Failed to retrieve wallets: ${error.message}`);
       throw new InternalServerErrorException('Failed to retrieve wallets');
     }
   }
@@ -78,6 +82,7 @@ export class WalletsService {
     try {
       return await this.walletRepository.findOneBy({ id });
     } catch (error) {
+      this.logger.error(`Failed to retrieve wallet: ${error.message}`);
       throw new InternalServerErrorException('Failed to retrieve wallet');
     }
   }
@@ -88,12 +93,19 @@ export class WalletsService {
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
-    const balance: number = await getBalance(wallet.address);
-    const isOld: boolean = await getIsOld(wallet.address);
-    return {
-      balance: balance,
-      isOld: isOld,
-    };
+    try {
+      const balance: number = await getBalance(wallet.address);
+      const isOld: boolean = await getIsOld(wallet.address);
+      return {
+        balance: balance,
+        isOld: isOld,
+      };
+    } catch (error) {
+      this.logger.error(`Failed to retrieve wallet balance: ${error.message}`);
+      throw new ServiceUnavailableException(
+        'Failed to retrieve wallet balance',
+      );
+    }
   }
 
   async removeWallet(walletId: number, userId: number) {
@@ -102,35 +114,48 @@ export class WalletsService {
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
-    const removedWalletPreference: number = wallet.preference;
-    await this.walletRepository.remove(wallet);
-    const walletsToUpdate = await this.walletRepository.find({
-      where: { userId: userId, preference: MoreThan(removedWalletPreference) },
-    });
-    for (const walletToUpdate of walletsToUpdate) {
-      walletToUpdate.preference -= 1;
-      await this.walletRepository.save(walletToUpdate);
+    try {
+      const removedWalletPreference: number = wallet.preference;
+      await this.walletRepository.remove(wallet);
+      const walletsToUpdate = await this.walletRepository.find({
+        where: {
+          userId: userId,
+          preference: MoreThan(removedWalletPreference),
+        },
+      });
+      for (const walletToUpdate of walletsToUpdate) {
+        walletToUpdate.preference -= 1;
+        await this.walletRepository.save(walletToUpdate);
+      }
+      return true;
+    } catch (error) {
+      this.logger.error(`Failed to remove wallet: ${error.message}`);
+      throw new InternalServerErrorException('Failed to remove wallet');
     }
-    return true;
   }
 
   async updateWallets(wallets: Wallet[], userId: number) {
-    for (const wallet of wallets) {
-      const existingWallet = await this.findWalletByIdAndUser(
-        wallet.id,
-        wallet.userId,
-      );
-      if (!existingWallet || existingWallet.userId !== userId) {
-        throw new UnauthorizedException(
-          'You do not have permission to update this wallet.',
+    try {
+      for (const wallet of wallets) {
+        const existingWallet = await this.findWalletByIdAndUser(
+          wallet.id,
+          wallet.userId,
         );
+        if (!existingWallet || existingWallet.userId !== userId) {
+          throw new UnauthorizedException(
+            'You do not have permission to update this wallet.',
+          );
+        }
+        existingWallet.name = wallet.name;
+        existingWallet.address = wallet.address;
+        existingWallet.preference = wallet.preference;
+        await this.walletRepository.save(existingWallet);
       }
-      existingWallet.name = wallet.name;
-      existingWallet.address = wallet.address;
-      existingWallet.preference = wallet.preference;
-      await this.walletRepository.save(existingWallet);
+      return true;
+    } catch (error) {
+      this.logger.error(`Failed to update wallets: ${error.message}`);
+      throw new InternalServerErrorException('Failed to update wallets');
     }
-    return true;
   }
 
   async getRates() {
@@ -148,7 +173,8 @@ export class WalletsService {
         return _rates;
       }
       return rates;
-    } catch (err) {
+    } catch (error) {
+      this.logger.error(`Failed to retrieve rates: ${error.message}`);
       throw new InternalServerErrorException('Failed to retrieve rates');
     }
   }
@@ -160,7 +186,8 @@ export class WalletsService {
       newRates.eur = dto.eur !== undefined ? dto.eur : _rates.eur;
       newRates.usd = dto.usd !== undefined ? dto.usd : _rates.usd;
       return await this.ratesRepository.save(newRates);
-    } catch (err) {
+    } catch (error) {
+      this.logger.error(`Failed to add rates: ${error.message}`);
       throw new InternalServerErrorException('Failed to add rates');
     }
   }
