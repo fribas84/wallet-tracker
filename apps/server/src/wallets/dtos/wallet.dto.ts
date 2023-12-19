@@ -1,7 +1,6 @@
 import { IsInt, IsString, Min, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-
 export class WalletDTO {
   @IsInt()
   @Min(1)
