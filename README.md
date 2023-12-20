@@ -11,9 +11,11 @@ This mono repo uses a [PNPM Workspace](https://pnpm.io/workspaces). The folder s
         -  web: Next.js Application
         -  server: Nest.js Backend 
 
-![Nest JS Module](https://github.com/fribas84/wallet-tracker/blob/main/desing/backend-NestJsmodules.png)
+## NestJS Modules
+![NestJS Module](https://github.com/fribas84/wallet-tracker/blob/main/desing/backend-NestJsmodules.png)
 
-
+## NextJs pages
+![Nesxt pages](https://github.com/fribas84/wallet-tracker/blob/main/desing/backend-UI.png)
 ## Features
 
 ### User Register
@@ -158,3 +160,14 @@ TODO
 
 The API Documentation is available in this [Swagger](https://nest-js-server-production.up.railway.app/api/).
 
+# Stack
+
+The stack used in this project:
+
+(https://user-images.githubusercontent.com/25181517/186711335-a3729606-5a78-4496-9a36-06efcc74f800.png)
+(https://user-images.githubusercontent.com/25181517/192107858-fe19f043-c502-4009-8c47-476fc89718ad.png)
+(https://user-images.githubusercontent.com/25181517/202896760-337261ed-ee92-4979-84c4-d4b829c7355d.png)
+(https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png)
+(https://github.com/marwin1991/profile-technology-icons/assets/136815194/519bfaf3-c242-431e-a269-876979f05574)
+(https://github.com/marwin1991/profile-technology-icons/assets/136815194/5f8c622c-c217-4649-b0a9-7e0ee24bd704)
+(https://user-images.githubusercontent.com/25181517/182884177-d48a8579-2cd0-447a-b9a6-ffc7cb02560e.png)
