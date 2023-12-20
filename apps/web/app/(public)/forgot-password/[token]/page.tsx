@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react'
 import Alert from '@/components/Alert';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { axiosClient } from '@/config/axiosClient';
 type Props = {}
 
 export default function ConfirmRecover({ params }: { params: { token: string } }) {
@@ -16,17 +16,17 @@ export default function ConfirmRecover({ params }: { params: { token: string } }
 
     const router = useRouter();
 
-    // useEffect(() => {
-    //     let timer: NodeJS.Timeout;
-    //     if (showAlert) {
-    //         timer = setTimeout(() => {
-    //             setShowAlert(false);
-    //         }, 5000); // 5000 milliseconds = 5 seconds
-    //     }
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (showAlert) {
+            timer = setTimeout(() => {
+                setShowAlert(false);
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
 
-    //    
-    //     return () => clearTimeout(timer);
-    // }, [showAlert]);
+       
+        return () => clearTimeout(timer);
+    }, [showAlert]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -56,13 +56,13 @@ export default function ConfirmRecover({ params }: { params: { token: string } }
         }
         try {
           
-            const url: string = `http://localhost:4000/api/v1/users/recover/${params.token}`;
+            const url: string = `users/recover/${params.token}`;
             const config = {
                 headers: {
                     "Content-Type": "application/json"
                 }
             }
-            const response = await axios.post(url, { email, password }, config);
+            const response = await axiosClient.post(url, { email, password }, config);
             console.log(response);
             setEmail('');
             setPassword('');

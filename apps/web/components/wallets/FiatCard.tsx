@@ -1,6 +1,6 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Alert from '../Alert'
+import { axiosClient } from '@/config/axiosClient'
 
 interface Props {
   balance: number
@@ -63,7 +63,7 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
       else {
         body = { eur: currentRate };
       }
-      const url = 'http://localhost:4000/api/v1/wallets/rates'
+      const url = '/wallets/rates'
       const token = localStorage.getItem('token');
       if (!token) {
         return
@@ -74,7 +74,7 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
           "Content-Type": "application/json"
         }
       }
-      const response = await axios.post(url, body, config);
+      const response = await axiosClient.post(url, body, config);
       setAlert(false);
       setAlertMsg('Rate updated');
       setShowAlert(true);

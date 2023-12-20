@@ -4,6 +4,7 @@ import { Bars } from 'react-loader-spinner';
 import Alert from '../Alert';
 import BalanceCard from './BalanceCard';
 import FiatCard from './FiatCard';
+import { axiosClient } from '@/config/axiosClient';
 
 interface Props {
     name: string,
@@ -46,7 +47,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
     useEffect(() => {
         const fecthWalletDetails = async () => {
 
-            const url = `http://localhost:4000/api/v1/wallets/balance/${id}`
+            const url = `/wallets/balance/${id}`
             const token = localStorage.getItem('token');
             if (!token) {
                 return
@@ -58,7 +59,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
                 }
             }
             try {
-                const response = await axios.get(url, config);
+                const response = await axiosClient.get(url, config);
                 const balanceData = response.data;
                 setBalance(balanceData.balance);
                 setIsOld(balanceData.isOld);
@@ -71,7 +72,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
             }
         }
         const fetchRates = async () => {
-            const url = `http://localhost:4000/api/v1/wallets/rates`;
+            const url = `/wallets/rates`;
             const token = localStorage.getItem('token');
             if (!token) {
                 return
@@ -83,7 +84,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
                 }
             }
             try {
-                const response = await axios.get(url, config);
+                const response = await axiosClient.get(url, config);
                 const rates = response.data;
                 setEur(rates.eur);
                 setUsd(rates.usd);

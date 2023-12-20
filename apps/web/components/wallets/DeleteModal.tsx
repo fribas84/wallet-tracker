@@ -30,7 +30,7 @@ export default function ModalNewWallet({ showModal, setShowModal, id, name, dele
 
     const handleDelete = async ()=>{
         try {
-            const url = `http://localhost:4000/api/v1/wallets/${id}`
+            const url = `/wallets/${id}`
             const token = localStorage.getItem('token');
             if (!token) {
                 return
@@ -41,7 +41,7 @@ export default function ModalNewWallet({ showModal, setShowModal, id, name, dele
                     "Content-Type": "application/json"
                 }
             }
-            const response = await axios.delete(url, config);
+            const response = await axiosClient.delete(url, config);
 
             setShowAlert(true);
             setAlert(false);

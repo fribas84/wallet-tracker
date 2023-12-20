@@ -2,7 +2,7 @@
 import Alert from '@/components/Alert';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { axiosClient } from '@/config/axiosClient';
 
 type Props = {}
 
@@ -33,8 +33,8 @@ const Recover = (props: Props) => {
             return
         }
         try{
-            const url: string = 'http://localhost:4000/api/v1/users/recover/'
-            const response = await axios.post(url, {email})
+            const url: string = '/users/recover/'
+            const response = await axiosClient.post(url, {email})
             setAlertMsg("Check your Email for the recovery link");
             setAlertError(false);
             setShowAlert(true);

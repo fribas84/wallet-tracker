@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import {useRouter} from 'next/navigation';
 import Link from 'next/link';
+import { axiosClient }  from '@/config/axiosClient';
 
 import Alert from '@/components/Alert';
 import axios from 'axios';
@@ -24,10 +25,10 @@ export default function Page({ params }: { params: { token: string } }) {
             return
         } 
         try {
-            const url = `http://localhost:4000/api/v1/users/confirm/${params.token}`;
+            const url = `/users/confirm/${params.token}`;
             console.log(url);
-            const response = await axios.post(url, {email});
-            const data = await response.data;
+            const response = await axiosClient.post(url, {email});
+            const data = response.data;
             setAlertError(false);
             setAlertMsg('Account confirmed successfully');
             setShowAlert(true);
@@ -35,7 +36,7 @@ export default function Page({ params }: { params: { token: string } }) {
         } catch (error) {
             console.log(error);
             setAlertError(true);
-            setAlertMsg(error.response.data.message || 'Error occured while confirming your account');
+            setAlertMsg(error?.response.data.message || 'Error occured while confirming your account');
             setShowAlert(true);
         }
 

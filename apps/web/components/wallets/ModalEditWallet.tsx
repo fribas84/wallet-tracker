@@ -1,12 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
-import axios from "axios";
 import { IWallet } from "@/types/Wallet";
-
-
-//TODO logic and everything
-//TODO improce error handling 
+import { axiosClient } from "@/config/axiosClient";
 
 interface Props {
   wallet: IWallet;
@@ -62,7 +58,7 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
     setAlertMsg('');
     try {
 
-      const url = `http://localhost:4000/api/v1/wallets`
+      const url = `/wallets`
       const token = localStorage.getItem('token');
       if (!token) {
         return
@@ -74,7 +70,7 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
         }
       }
       const body = { name: name, address: address };
-      const response = await axios.post(url, body, config);
+      const response = await axiosClient.post(url, body, config);
       setName('');
       setAddress('');
       updateWallet(response.data);

@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react'
 import { IWallet } from '@/types/Wallet';
 import WalletTable from '@/components/wallets/WalletTable';
 import Alert from '@/components/Alert';
+import { axiosClient } from '@/config/axiosClient';
+
 
 
 type Props = {}
@@ -37,7 +39,7 @@ const Wallet = (props: Props) => {
     useEffect(() => {
         const fecthWallets = async () => {
             try {
-                const url = `http://localhost:4000/api/v1/wallets`
+                const url = `/wallets`
                 const token = localStorage.getItem('token');
                 if (!token) {
                     router.push('/login');
@@ -48,7 +50,7 @@ const Wallet = (props: Props) => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-                const response = await axios.get(url, config);
+                const response = await axiosClient.get(url, config);
                 const walletsData = response.data.sort((a: IWallet, b: IWallet) => a.preference - b.preference);
                 setWallets(walletsData);
                 setAlertError(false);
@@ -69,7 +71,7 @@ const Wallet = (props: Props) => {
 
     const handleSavePreference = async () => {
         try {
-            const url = `http://localhost:4000/api/v1/wallets/edit/multiple`
+            const url = `/wallets/edit/multiple`
             const token = localStorage.getItem('token');
             if (!token) {
                 router.push('/login');
@@ -80,7 +82,7 @@ const Wallet = (props: Props) => {
                     Authorization: `Bearer ${token}`
                 }
             }
-            const response = await axios.patch(url, { wallets: wallets }, config);
+            const response = await axiosClient.patch(url, { wallets: wallets }, config);
             setAlertError(false);
             setAlertMessage("Preference order saved");
             setShowAlert(true);

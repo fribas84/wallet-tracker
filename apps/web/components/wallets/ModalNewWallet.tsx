@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert from "../Alert";
 import { isValidEthereumAddress } from "@/helpers/isValidEthereumAddress";
-import axios from "axios";
 import { IWallet } from "@/types/Wallet";
+import { axiosClient } from "@/config/axiosClient";
 
 //TODO improce error handling 
 
@@ -59,7 +59,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
         setAlertMsg('');
         try {
             
-            const url = `http://localhost:4000/api/v1/wallets`
+            const url = `/wallets`
             const token = localStorage.getItem('token');
             if (!token) {
                 return
@@ -71,7 +71,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
                 }
             }
             const body = { name:name, address: address };
-            const response = await axios.post(url, body, config);
+            const response = await axiosClient.post(url, body, config);
             console.log(response);
             setName('');
             setAddress('');
@@ -80,8 +80,9 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
             
         }
         catch (error) {
-            //TODO error handling
-            console.log(err);
+            setShowAlert(true);
+            setAlert(true);
+            setAlertMsg(error.response.data.message || 'Something went wrong');
         }
     };
     return (

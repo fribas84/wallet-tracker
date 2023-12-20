@@ -4,8 +4,8 @@ import { ReactNode, SetStateAction, createContext, useContext, useEffect, useSta
 
 
 import { useRouter } from 'next/navigation'
-import axios from "axios";
 import { IUserProfile } from "@/types/UserProfile";
+import { axiosClient } from "@/config/axiosClient";
 
 
 type authContextType = {
@@ -58,8 +58,8 @@ export function AuthProvider({ children }: Props) {
                 }
             }
             try {
-                const url = `http://localhost:4000/api/v1/users`
-                const response = await axios.get(url, config);
+                const url = `/users`
+                const response = await axiosClient.get(url, config);
                 const profileData = response.data;
                 setUser(profileData);
             } catch (error) {
@@ -73,9 +73,9 @@ export function AuthProvider({ children }: Props) {
     const login = async (email: string, password: string) => {
         console.log('login')
         try {
-            const url = `http://localhost:4000/api/v1/auth/login`;
+            const url = `/auth/login`;
             const data = { email, password };
-            const response = await axios.post(url, data);
+            const response = await axiosClient.post(url, data);
             const { access_token } = response.data;
             localStorage.setItem('token', access_token);
             setAccessToken(access_token);
