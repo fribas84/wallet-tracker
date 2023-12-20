@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { use, useEffect, useState } from 'react'
 import Alert from '@/components/Alert';
 import axios from 'axios';
-import { useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { axiosClient } from '@/config/axiosClient';
 type Props = {}
 
 const Signup = (props: Props) => {
@@ -26,55 +27,48 @@ const Signup = (props: Props) => {
 
     // Cleanup function to clear the timer if the component unmounts
     return () => clearTimeout(timer);
-  }, [showAlert]);  
-  
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  }, [showAlert]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(email === '' || password === '' || password2 === '') {
+    if (email === '' || password === '' || password2 === '') {
       setAlertMsg('Please fill out all fields');
       setAlert(true);
       setShowAlert(true);
       return
     }
-    if(password !== password2) {
+    if (password !== password2) {
       setAlertMsg('Passwords do not match');
       setAlert(true);
       setShowAlert(true);
       return
     }
-    if(password.length < 6) {
+    if (password.length < 6) {
       setAlertMsg('Password must be at least 6 characters');
       setAlert(true);
       setShowAlert(true);
       return
     }
-    if(!email.includes('@')) {
+    if (!email.includes('@')) {
       setAlertMsg('Please enter a valid email');
       setAlert(true);
       setShowAlert(true);
       return
     }
     try {
-      const url: string = 'http://localhost:4000/api/v1/users/signup'
+      const url: string = '/users/signup'
       const config = {
         headers: {
           "Content-Type": "application/json"
         }
       }
-      const response = axios.post(url, { email, password }, config);
-      setEmail('');
-      setPassword('');
-      setPassword2('');
-      setShowAlert(false);
-      setAlert(false);
-      setAlertMsg('');
+      const response = await axiosClient.post(url, { email, password }, config);
+      console.log(response);
       router.push('/login');
-
-
     } catch (error) {
       setAlertMsg(error.response.data.message || 'Something went wrong');
       setAlert(true);
-      setShowAlert(true);
+      setShowAlert(true)
     }
   };
 

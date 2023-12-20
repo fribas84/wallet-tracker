@@ -1,58 +1,56 @@
-import * as nodemailer from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
-
+import axios from 'axios';
+import { Logger } from '@nestjs/common';
+import emailjs from '@emailjs/nodejs';
+const logger = new Logger('HELPER');
 export const emailRegister = async (email: string, token: string) => {
+  
+  const params = {
+    email_to: email,
+    url: `${process.env.FRONTEND_URL}/confirm/${token}`,
+  };
+
   try {
-    const transport = nodemailer.createTransport({
-      host: process.env.NODE_MAILER_HOST,
-      port: process.env.NODE_MAILER_PORT,
-      auth: {
-        user: process.env.NODE_MAILER_USER,
-        pass: process.env.NODE_MAILER_PASS,
+    await emailjs.send(
+      process.env.EMAILJS_SERVICE_ID as string,
+      process.env.EMAILJS_CONFIRM_TEMPLATE_ID as string,
+      params,
+      {
+        publicKey: process.env.EMAILJS_PUBLIC_KEY as string,
+        privateKey: process.env.EMAILJS_PRIVATE_KEY as string,
       },
-    } as SMTPTransport.Options);
-
-    const emailToSend = {
-      from: 'WalletTracker <noreply@wallettracker.com>',
-      to: email,
-      subject: 'WalletTracker - Confirm your email',
-      html: `
-            <h1>WalletTracker</h1>
-            <p>Click <a href="${process.env.FRONTEND_URL}/confirm/${token}">here</a> to confirm your email.</p>
-            <p>If you didn't register, please ignore this email.</p>
-            `,
-    };
-
-    await transport.sendMail(emailToSend);
+    );
   } catch (error) {
-    throw new Error(error);
+    logger.error(
+      'Failed to send email',
+      error.message || JSON.stringify(error),
+    );
+    throw error; // Or handle the error as per your application's needs
   }
 };
 
 export const emailRecoverPassword = async (email: string, token: string) => {
+
+  const params = {
+    email_to: email,
+    url: `${process.env.FRONTEND_URL}/forgot-password/${token}`,
+  };
+
   try {
-    const transport = nodemailer.createTransport({
-      host: process.env.NODE_MAILER_HOST,
-      port: process.env.NODE_MAILER_PORT,
-      auth: {
-        user: process.env.NODE_MAILER_USER,
-        pass: process.env.NODE_MAILER_PASS,
+    await emailjs.send(
+      process.env.EMAILJS_SERVICE_ID as string,
+      process.env.EMAILJS_RESET_TEMPLATE_ID as string,
+      params,
+      {
+        publicKey: process.env.EMAILJS_PUBLIC_KEY as string,
+        privateKey: process.env.EMAILJS_PRIVATE_KEY as string,
       },
-    } as SMTPTransport.Options);
-
-    const emailToSend = {
-      from: 'WalletTracker <noreply@wallettracker.com>',
-      to: email,
-      subject: 'WalletTracker - Recover Password',
-      html: `
-            <h1>WalletTracker</h1>
-            <p>Click <a href="${process.env.FRONTEND_URL}/forgot-password/${token}">here</a> to recover your password.</p>
-            <p>If you didn't requested this, please ignore this email.</p>
-            `,
-    };
-
-    await transport.sendMail(emailToSend);
+    );
   } catch (error) {
-    throw new Error(error);
+    logger.error(
+      'Failed to send email',
+      error.message || JSON.stringify(error),
+    );
+    throw error; // Or handle the error as per your application's needs
   }
+  
 };

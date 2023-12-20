@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
   Logger,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,9 +20,16 @@ export class UsersService {
     if (existingUser) {
       throw new BadRequestException('User already exists');
     }
-    const user = this.repo.create({ email, password });
+    const user = await this.repo.create({ email, password });
     await this.repo.save(user);
-    await emailRegister(user.email, user.confirmationToken);
+    try {
+      this.logger.log('Sending email');
+      await emailRegister(user.email, user.confirmationToken);
+    } catch (error) {
+      await this.repo.remove(user);
+      this.logger.error(String(error));
+      throw new InternalServerErrorException('Error sending email');
+    }
     return user;
   }
 
