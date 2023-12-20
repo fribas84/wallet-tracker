@@ -170,4 +170,5 @@ The stack used in this project:
 - TypeOrm
 - Node.Js
 -Passport.js
+
 ![stack](https://github.com/fribas84/wallet-tracker/blob/main/desing/backend-Libraries.png)
