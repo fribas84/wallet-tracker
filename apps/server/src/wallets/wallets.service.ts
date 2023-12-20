@@ -70,8 +70,6 @@ export class WalletsService {
       where: { address: _address, userId: userId },
     });
 
-    this.logger.log(_address);
-    this.logger.log(wallet);
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }

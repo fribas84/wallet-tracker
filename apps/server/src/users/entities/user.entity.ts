@@ -9,11 +9,9 @@ import {
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
-import { Logger } from '@nestjs/common';
 
 @Entity()
 export class User {
-  private readonly logger = new Logger('Entity User');
   private passwordChanged = false;
 
   @ObjectIdColumn()
@@ -56,7 +54,6 @@ export class User {
   }
 
   async comparePassword(attempt: string): Promise<boolean> {
-    this.logger.log(`Comparing password: ${attempt}`);
     return await bcrypt.compare(attempt, this.password);
   }
 

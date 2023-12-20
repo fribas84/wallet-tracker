@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { Logger } from '@nestjs/common';
 import emailjs from '@emailjs/nodejs';
-const logger = new Logger('HELPER');
+const logger = new Logger('Email Helper');
 export const emailRegister = async (email: string, token: string) => {
-  
   const params = {
     email_to: email,
     url: `${process.env.FRONTEND_URL}/confirm/${token}`,
@@ -29,7 +28,6 @@ export const emailRegister = async (email: string, token: string) => {
 };
 
 export const emailRecoverPassword = async (email: string, token: string) => {
-
   const params = {
     email_to: email,
     url: `${process.env.FRONTEND_URL}/forgot-password/${token}`,
@@ -52,5 +50,4 @@ export const emailRecoverPassword = async (email: string, token: string) => {
     );
     throw error; // Or handle the error as per your application's needs
   }
-  
 };
