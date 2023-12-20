@@ -8,10 +8,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.setGlobalPrefix('api/v1');
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://nextjs-web-production.up.railway.app',
-    ],
+    origin: 'https://nextjs-web-production.up.railway.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders:
+      'Content-Type, Accept, Authorization, Bearer, X-Requested-With, Origin, Access-Control-Allow-Origin',
   });
 
   const swaggerConfig = new DocumentBuilder()
