@@ -16,6 +16,7 @@ export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async create(email: string, password: string) {
+    this.logger.log(password);
     const existingUser = await this.repo.findOne({ where: { email } });
     if (existingUser) {
       throw new BadRequestException('User already exists');
@@ -71,7 +72,6 @@ export class UsersService {
     if (user.confirmationToken !== token) {
       throw new BadRequestException('Invalid token');
     }
-
     user.confirmationToken = '';
     user.isConfirmed = true;
     return this.repo.save(user);

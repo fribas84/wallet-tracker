@@ -2,8 +2,10 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 
+
 @Injectable()
 export class AuthService {
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
@@ -11,6 +13,8 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
   async validateUser(email: string, password: string) {
+    this.logger.log(`Validating user: ${email}`);
+    this.logger.log(`Password: ${password}`);
     const user = await this.usersService.findOneByEmail(email);
     if (!user) {
       throw new UnauthorizedException('User not found');
@@ -21,8 +25,9 @@ export class AuthService {
     }
 
     const passwordMatches = await user.comparePassword(password);
+    this.logger.log(`Password matches: ${passwordMatches}`);
     if (!passwordMatches) {
-      throw new UnauthorizedException('Invalid credentials')
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     this.logger.log(`User authenticated: ${email}`);
