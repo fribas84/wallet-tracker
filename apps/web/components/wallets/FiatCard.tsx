@@ -83,7 +83,7 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
      
     catch (error) {
       setAlert(true);
-      setAlertMsg(error.response.data.message ||  'Error updating rate');
+      setAlertMsg((error as any).response.data.message ||  'Error updating rate');
       setShowAlert(true);
     }
   }

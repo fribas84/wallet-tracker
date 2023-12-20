@@ -41,7 +41,7 @@ const Recover = (props: Props) => {
             setEmail('');
 
         }catch(error){
-            setAlertMsg(error.response.data.message);
+            setAlertMsg((error as any).response.data.message || 'Error recovering passowrd');
             setAlertError(true);
             setShowAlert(true);
         }
