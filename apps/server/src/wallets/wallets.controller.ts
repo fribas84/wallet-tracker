@@ -62,7 +62,7 @@ export class WalletsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
   @Delete('/:address')
-  removeWallet(@Param('address') walletId: ObjectId, @Request() req: any) {
+  removeWallet(@Param('address') address: string, @Request() req: any) {
     return this.walletService.removeWallet(address, req.user.id);
   }
 
