@@ -28,9 +28,6 @@ const Navbar = ({ }: Props) => {
             </div>
             <div className={`w-full block flex-grow lg:flex lg:items-center lg:w-auto ${isMenuOpen ? '' : 'hidden'}`}>
                 <div className="text-sm lg:flex-grow">
-                    <Link href="#responsive-header" className="block mt-4 text-xl lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-                        Docs
-                    </Link>
                     <Link href="/wallets" className="block mt-4 text-xl lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Wallets</Link>
                 </div>
                 <span className='text-xl text-white font-bold mx-4'>{user.email}</span>
