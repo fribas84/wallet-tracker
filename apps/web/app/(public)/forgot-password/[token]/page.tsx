@@ -74,7 +74,7 @@ export default function ConfirmRecover({ params }: { params: { token: string } }
 
 
         } catch (error) {
-            setAlertMsg(error.response.data.message || 'Something went wrong');
+            setAlertMsg((error as any).response.data.message || 'Something went wrong');
             setAlert(true);
             setShowAlert(true);
         }
