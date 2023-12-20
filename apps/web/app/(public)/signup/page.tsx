@@ -2,9 +2,11 @@
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react'
 import Alert from '@/components/Alert';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { axiosClient } from '@/config/axiosClient';
+import { Bars } from 'react-loader-spinner'; 
+
+
 type Props = {}
 
 const Signup = (props: Props) => {
@@ -14,6 +16,8 @@ const Signup = (props: Props) => {
   const [alert, setAlert] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMsg, setAlertMsg] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
 
   const router = useRouter();
 
@@ -56,15 +60,22 @@ const Signup = (props: Props) => {
       return
     }
     try {
+      setLoading(false);
       const url: string = '/users/signup'
       const config = {
         headers: {
           "Content-Type": "application/json"
         }
       }
+      console.log({ email, password });
       const response = await axiosClient.post(url, { email, password }, config);
+      setLoading(false);
       console.log(response);
+      setAlertMsg('Check your email to activate your account');
+      setAlert(false);
+      setShowAlert(true)
       router.push('/login');
+     
     } catch (error) {
       setAlertMsg((error as any).response.data.message || 'Something went wrong');
       setAlert(true);
@@ -77,6 +88,24 @@ const Signup = (props: Props) => {
       <div className="w-2/3 p-8 bg-white rounded shadow-md">
         {showAlert && <Alert error={alert} msg={alertMsg} />}
         <h1 className='font-bold text-xl text-center'>Sign up</h1>
+
+        {loading &&
+          <>
+            <div className="flex flex-col items-center justify-center mt-16">
+              <h1 className='text-3xl'> Registering user  </h1>
+              <Bars
+                height="80"
+                width="80"
+                color="#4fa94d"
+                ariaLabel="bars-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+
+              />
+            </div>
+          </>
+        }
         <form className="mb-4" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">
