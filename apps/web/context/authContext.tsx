@@ -81,8 +81,9 @@ export function AuthProvider({ children }: Props) {
             setAccessToken(access_token);
             router.push("/wallets");
         }
-        catch (error) {
-            throw (error.response.data);
+        catch (error: any) {
+
+            throw (error.response.data as any);
         }
     }
     const logout = () => {

@@ -28,7 +28,7 @@ const Login = (props: Props) => {
 
     // Cleanup function to clear the timer if the component unmounts
     return () => clearTimeout(timer);
-  }, [showAlert]); 
+  }, [showAlert]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,10 +47,10 @@ const Login = (props: Props) => {
     try {
       await login(email, password);
     }
-    catch (error) {
+    catch (error: any) {
       setShowAlert(true);
-      setAlertMsg(error.message|| 'Something went wrong');
-      }
+      setAlertMsg(String(error.message) || 'Something went wrong');
+    }
   };
 
   return (
