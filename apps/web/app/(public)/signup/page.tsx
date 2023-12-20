@@ -26,7 +26,7 @@ const Signup = (props: Props) => {
     if (showAlert) {
       timer = setTimeout(() => {
         setShowAlert(false);
-      }, 5000); // 5000 milliseconds = 5 seconds
+      }, 6000); // 5000 milliseconds = 5 seconds
     }
 
     // Cleanup function to clear the timer if the component unmounts
@@ -60,7 +60,7 @@ const Signup = (props: Props) => {
       return
     }
     try {
-      setLoading(false);
+      setLoading(true);
       const url: string = '/users/signup'
       const config = {
         headers: {
