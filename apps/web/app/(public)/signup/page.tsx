@@ -35,6 +35,7 @@ const Signup = (props: Props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
     if (email === '' || password === '' || password2 === '') {
       setAlertMsg('Please fill out all fields');
       setAlert(true);
@@ -74,6 +75,7 @@ const Signup = (props: Props) => {
       setAlertMsg('Check your email to activate your account');
       setAlert(false);
       setShowAlert(true)
+      await delay(5000);
       router.push('/login');
      
     } catch (error) {
