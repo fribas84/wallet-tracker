@@ -17,19 +17,21 @@ This mono repo uses a [PNPM Workspace](https://pnpm.io/workspaces). The folder s
 ## NextJs pages
 ![Nesxt pages](https://github.com/fribas84/wallet-tracker/blob/main/desing/backend-UI.png)
 ## Features
-
+![home](https://github.com/fribas84/wallet-tracker/blob/main/desing/home.jpeg)
 ### User Register
 When a user signups an email conformation is sent to the users email address. He can only access the application once the user confirms.
-
+![register](https://github.com/fribas84/wallet-tracker/blob/main/desing/signup.jpeg)
+![confirmationEmail](https://github.com/fribas84/wallet-tracker/blob/main/desing/confirmationEmail.jpeg)
 ### Pasword Recovery
 Same as, user Register, when to recover a password, an email is sent to the user to trigger the password recover process.
 
 ### Add Wallets to track
 The user can add any Ethereum valid address and monitor the balance, it can select the fiat currency, or display units wei/Ethereum
-
+![newWallet](https://github.com/fribas84/wallet-tracker/blob/main/desing/newWalletModal.jpeg)
+![walletList](https://github.com/fribas84/wallet-tracker/blob/main/desing/walletList.jpeg)
 ### Rates
 The exchange rates are valid for five minutes, the user can update them and this will be stores in the database, but they will only be valid for a certain period of time. 
-
+![walletDetail](https://github.com/fribas84/wallet-tracker/blob/main/desing/walletDetailModal.jpeg)
 ### User Authentication
 For the User Authentication, the backend uses PassportJS to create JWT authentication. In order to get a valid token:
 - The user must log in with User / password
