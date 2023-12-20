@@ -48,7 +48,7 @@ export default function ModalNewWallet({ showModal, setShowModal, address, name,
             setAlert(false);
             setAlertMsg('Wallet removed');
             setShowModal(false);
-            deleteWallet(id);
+            deleteWallet(address);
 
         } catch (error) {
             setShowAlert(true);

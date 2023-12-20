@@ -27,9 +27,7 @@ const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount, deleteWallet }:
                 <button onClick={() => setShowDetails(true)} className="text-white mr-2 border py-2 px-5 bg-teal-500 hover:bg-teal-700 rounded ">
                     Details
                 </button>
-                <button className="text-white mr-2 border py-2 px-5 bg-yellow-500 hover:bg-yellow-700  rounded">
-                    Edit
-                </button>
+
                 <button className="text-white mr-2 border py-2 px-5 bg-red-500 hover:bg-red-700 rounded " onClick={()=>setShowRemove(true)} >
                     Remove
                 </button>

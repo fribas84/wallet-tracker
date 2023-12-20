@@ -31,11 +31,11 @@ const WalletTable = ({ wallets, setWallets, setChangesSaved }: Props) => {
         swapWallets(index, index + 1);
     }
 
-    const deleteWallet = (id: number) => {
-        const walletToDelete = wallets.find(w => w.id === id);
+    const deleteWallet = (address: string) => {
+        const walletToDelete = wallets.find(w => w.address === address);
         if (!walletToDelete) {
             return; }
-        const updatedWallets = wallets.filter(w => w.id !== id);
+        const updatedWallets = wallets.filter(w => w.address !== address);
         const adjustedWallets = updatedWallets.map(w => {
             if (w.preference > walletToDelete.preference) {
                 return { ...w, preference: w.preference - 1 };
