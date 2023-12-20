@@ -63,9 +63,6 @@ export class UsersService {
 
   async confirmEmail(token: string, email: string) {
     const user = await this.repo.findOne({ where: { email } });
-    this.logger.log(user?.email);
-    this.logger.log(user?.confirmationToken);
-    this.logger.log(token);
     if (!user) {
       throw new NotFoundException('User not found or invalid token');
     }

@@ -21,6 +21,8 @@ export class User {
   @Exclude()
   password: string;
 
+  private tempPassword: string;
+
   @Column({
     nullable: false,
   })
@@ -34,17 +36,19 @@ export class User {
   @BeforeInsert()
   beforeInsertActions() {
     this.isConfirmed = false;
+    this.tempPassword = this.password;
   }
 
   @BeforeInsert()
-  async createConfirmationToken() {
-    this.confirmationToken = await this.createTempToken();
-  }
-
-  @BeforeInsert()
-  @BeforeUpdate()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  @BeforeUpdate()
+  async checkForPasswordChange() {
+    if (this.tempPassword !== this.password) {
+      await this.hashPassword();
+    }
   }
 
   async comparePassword(attempt: string): Promise<boolean> {
