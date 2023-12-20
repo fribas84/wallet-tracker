@@ -9,7 +9,7 @@ interface Props {
     setShowModal: Dispatch<SetStateAction<boolean>>
     address: string,
     name: string,
-    deleteWallet: (id: number) => void
+    deleteWallet: (address: string) => void
 }
 
 export default function ModalNewWallet({ showModal, setShowModal, address, name, deleteWallet }: Props) {
@@ -24,12 +24,12 @@ export default function ModalNewWallet({ showModal, setShowModal, address, name,
             timer = setTimeout(() => {
                 setShowAlert(false);
                 setShowModal(false)
-            }, 3000); 
+            }, 3000);
         }
         return () => clearTimeout(timer);
     }, [showAlert, setShowModal]);
 
-    const handleDelete = async ()=>{
+    const handleDelete = async () => {
         try {
             const url = `/wallets/${address}`
             const token = localStorage.getItem('token');
@@ -58,7 +58,7 @@ export default function ModalNewWallet({ showModal, setShowModal, address, name,
 
     }
     const handleClose = () => {
-  
+
         setAlert(false);
         setShowAlert(false);
         setAlertMsg('');
@@ -93,7 +93,7 @@ export default function ModalNewWallet({ showModal, setShowModal, address, name,
                                 </div>
                                 {/*body*/}
                                 <div className="flex flex-col items-center justify-center my-5">
-                                    <h1 className="font-bold text-2xl "> Do you want to remove wallet id: {id} - {name} ?</h1>
+                                    <h1 className="font-bold text-2xl "> Do you want to remove wallet {address} - {name} ?</h1>
 
                                 </div>
                                 {/*footer*/}

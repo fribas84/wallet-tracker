@@ -7,7 +7,7 @@ interface Props {
     moveUp: (preference: number) => void;
     moveDown: (preference: number) => void;
     walletCount: number;
-    deleteWallet: (id: number) => void;
+    deleteWallet: (address: string) => void;
 }
 
 const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount, deleteWallet }: Props) => {

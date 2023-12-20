@@ -8,7 +8,6 @@ import {
   UseGuards,
   Request,
   Patch,
-  ParseIntPipe,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -25,7 +24,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { WalletsService } from './wallets.service';
 import { UpdateWalletsDTO } from './dtos/updateWallets.dto';
 import { UpdateRateDto } from './dtos/updateRate.dto';
-import { ObjectId } from 'typeorm';
 @ApiBearerAuth()
 @ApiTags('wallets')
 @Controller('wallets')
