@@ -22,6 +22,7 @@ export class UsersService {
       throw new BadRequestException('User already exists');
     }
     const user = await this.repo.create({ email, password });
+    await user.setPassword(password);
     await this.repo.save(user);
     try {
       this.logger.log('Sending email');
@@ -96,7 +97,7 @@ export class UsersService {
       throw new BadRequestException('Invalid token');
     }
     user.confirmationToken = '';
-    user.password = password;
+    user.setPassword(password);
     return this.repo.save(user);
   }
 }
