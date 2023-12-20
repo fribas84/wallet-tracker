@@ -11,7 +11,7 @@ This mono repo uses a [PNPM Workspace](https://pnpm.io/workspaces). The folder s
         -  web: Next.js Application
         -  server: Nest.js Backend 
 
-![Nest JS Module](http://url/to/img.png)
+![Nest JS Module](https://github.com/fribas84/wallet-tracker/blob/main/desing/backend-NestJsmodules.png)
 
 
 ## Features
