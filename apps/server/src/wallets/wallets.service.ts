@@ -23,39 +23,6 @@ export class WalletsService {
     @InjectRepository(Rates) private ratesRepository: Repository<Rates>,
   ) {}
 
-  private async findWalletByIdAndUser(
-    walletId: ObjectId,
-    userId: ObjectId,
-  ): Promise<Wallet> {
-    // Ensure both walletId and userId are ObjectId instances
-    const walletObjectId = new ObjectId(walletId);
-    const userObjectId = new ObjectId(userId);
-
-    this.logger.log(
-      `Finding wallet with id ${walletObjectId} and user ${userObjectId}`,
-    );
-    this.logger.log(`Finding wallet with id ${walletId} and user ${userId}`);
-    const wallet = await this.walletRepository.findOne({
-      where: {
-        id: walletObjectId, // Use 'id' with ObjectId instance
-        userId: userObjectId,
-      },
-    });
-
-    if (!wallet) {
-      throw new NotFoundException('Wallet not found');
-    }
-
-    if (!wallet.userId.equals(userId)) {
-      // Use 'equals' for ObjectId comparison
-      throw new UnauthorizedException(
-        'You do not have permission to access this wallet',
-      );
-    }
-
-    return wallet;
-  }
-
   async createWallet(name: string, address: string, userId: ObjectId) {
     if (!name || !address) {
       throw new BadRequestException('Name and address are required');
@@ -123,8 +90,10 @@ export class WalletsService {
     }
   }
 
-  async removeWallet(walletId: ObjectId, userId: ObjectId) {
-    const wallet = await this.findWalletByIdAndUser(walletId, userId);
+  async removeWallet(address: string, userId: ObjectId) {
+    const wallet = await this.walletRepository.findOne({
+      where: { address: address, userId: userId },
+    });
 
     if (!wallet) {
       throw new NotFoundException('Wallet not found');

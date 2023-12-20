@@ -61,9 +61,9 @@ export class WalletsController {
   @ApiOperation({ summary: 'Remove a wallet' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  @Delete('/:walletId')
-  removeWallet(@Param('walletId') walletId: ObjectId, @Request() req: any) {
-    return this.walletService.removeWallet(walletId, req.user.id);
+  @Delete('/:address')
+  removeWallet(@Param('address') walletId: ObjectId, @Request() req: any) {
+    return this.walletService.removeWallet(address, req.user.id);
   }
 
   @ApiOperation({ summary: 'Edit multiple wallets' })
