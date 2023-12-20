@@ -1,9 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  BeforeInsert,
+  ObjectIdColumn,
+  ObjectId,
+} from 'typeorm';
 
 @Entity()
 export class Rates {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ObjectIdColumn()
+  id: ObjectId;
 
   @Column()
   eur: number;

@@ -1,11 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, Unique } from 'typeorm';
+import { ObjectId } from 'mongodb';
 
 @Unique(['name', 'userId'])
 @Unique(['address', 'userId'])
 @Entity()
 export class Wallet {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ObjectIdColumn()
+  id: ObjectId;
 
   @Column()
   name: string;
@@ -14,7 +15,7 @@ export class Wallet {
   address: string;
 
   @Column()
-  userId: number;
+  userId: ObjectId;
 
   @Column()
   preference: number;

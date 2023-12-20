@@ -13,7 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
 import { getBalance, getIsOld, getRates } from 'src/helpers/balanceHelper';
 import { UpdateRateDto } from './dtos/updateRate.dto';
-
+import { ObjectId } from 'mongodb';
 @Injectable()
 export class WalletsService {
   private readonly logger = new Logger(WalletsService.name);
@@ -24,18 +24,30 @@ export class WalletsService {
   ) {}
 
   private async findWalletByIdAndUser(
-    walletId: number,
-    userId: number,
+    walletId: ObjectId,
+    userId: ObjectId,
   ): Promise<Wallet> {
+    // Ensure both walletId and userId are ObjectId instances
+    const walletObjectId = new ObjectId(walletId);
+    const userObjectId = new ObjectId(userId);
+
+    this.logger.log(
+      `Finding wallet with id ${walletObjectId} and user ${userObjectId}`,
+    );
+    this.logger.log(`Finding wallet with id ${walletId} and user ${userId}`);
     const wallet = await this.walletRepository.findOne({
-      where: { id: walletId, userId },
+      where: {
+        id: walletObjectId, // Use 'id' with ObjectId instance
+        userId: userObjectId,
+      },
     });
 
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
 
-    if (wallet.userId !== userId) {
+    if (!wallet.userId.equals(userId)) {
+      // Use 'equals' for ObjectId comparison
       throw new UnauthorizedException(
         'You do not have permission to access this wallet',
       );
@@ -44,7 +56,7 @@ export class WalletsService {
     return wallet;
   }
 
-  async createWallet(name: string, address: string, userId: number) {
+  async createWallet(name: string, address: string, userId: ObjectId) {
     if (!name || !address) {
       throw new BadRequestException('Name and address are required');
     }
@@ -68,16 +80,16 @@ export class WalletsService {
     }
   }
 
-  async getWallets(userId: number) {
+  async getWallets(userId: ObjectId) {
     try {
-      return await this.walletRepository.find({ where: { userId } });
+      return await this.walletRepository.find({ where: { userId: userId } });
     } catch (error) {
       this.logger.error(`Failed to retrieve wallets: ${error.message}`);
       throw new InternalServerErrorException('Failed to retrieve wallets');
     }
   }
 
-  async getWallet(id: number) {
+  async getWallet(id: ObjectId) {
     try {
       return await this.walletRepository.findOneBy({ id });
     } catch (error) {
@@ -86,9 +98,13 @@ export class WalletsService {
     }
   }
 
-  async getWalletBalance(_wallet: number, userId: number) {
-    const wallet = await this.findWalletByIdAndUser(_wallet, userId);
+  async getWalletBalance(_address: string, userId: ObjectId) {
+    const wallet = await this.walletRepository.findOne({
+      where: { address: _address, userId: userId },
+    });
 
+    this.logger.log(_address);
+    this.logger.log(wallet);
     if (!wallet) {
       throw new NotFoundException('Wallet not found');
     }
@@ -107,7 +123,7 @@ export class WalletsService {
     }
   }
 
-  async removeWallet(walletId: number, userId: number) {
+  async removeWallet(walletId: ObjectId, userId: ObjectId) {
     const wallet = await this.findWalletByIdAndUser(walletId, userId);
 
     if (!wallet) {
@@ -133,14 +149,16 @@ export class WalletsService {
     }
   }
 
-  async updateWallets(wallets: Wallet[], userId: number) {
+  async updateWallets(wallets: Wallet[], userId: ObjectId) {
     try {
       for (const wallet of wallets) {
-        const existingWallet = await this.findWalletByIdAndUser(
-          wallet.id,
-          wallet.userId,
-        );
-        if (!existingWallet || existingWallet.userId !== userId) {
+        const existingWallet = await this.walletRepository.findOne({
+          where: { address: wallet.address, userId: userId },
+        });
+        if (
+          !existingWallet ||
+          existingWallet.userId.toString() !== userId.toString()
+        ) {
           throw new UnauthorizedException(
             'You do not have permission to update this wallet.',
           );
@@ -159,19 +177,26 @@ export class WalletsService {
 
   async getRates() {
     try {
-      const rates = await this.ratesRepository
-        .createQueryBuilder('rates')
-        .orderBy('createdAt', 'DESC')
-        .getOne();
-      if (!rates || rates.createdAt < Math.floor(Date.now() / 1000) - 300) {
+      const rates = await this.ratesRepository.find({
+        order: {
+          createdAt: 'DESC',
+        },
+        take: 1,
+      });
+      const latestRate = rates[0];
+      if (
+        !latestRate ||
+        latestRate.createdAt < Math.floor(Date.now() / 1000) - 300
+      ) {
         const _rates = await getRates();
-        const newRates = await this.ratesRepository.create();
-        newRates.eur = _rates.eur;
-        newRates.usd = _rates.usd;
+        const newRates = this.ratesRepository.create({
+          eur: _rates.eur,
+          usd: _rates.usd,
+        });
         await this.ratesRepository.save(newRates);
         return _rates;
       }
-      return rates;
+      return latestRate;
     } catch (error) {
       this.logger.error(`Failed to retrieve rates: ${error.message}`);
       throw new InternalServerErrorException('Failed to retrieve rates');

@@ -8,13 +8,13 @@ import { axiosClient } from '@/config/axiosClient';
 
 interface Props {
     name: string,
-    id: number
+    address: string,
     showModalDetails: boolean,
     setShowModalDetails: Dispatch<SetStateAction<boolean>>
 
 }
 
-const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props) => {
+const ModalDetails = ({ name, address, showModalDetails, setShowModalDetails }: Props) => {
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [alertMsg, setAlertMsg] = useState<string>('');
     const [alertError, setAlertError] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
     useEffect(() => {
         const fecthWalletDetails = async () => {
 
-            const url = `/wallets/balance/${id}`
+            const url = `/wallets/balance/${address}`
             const token = localStorage.getItem('token');
             if (!token) {
                 return
@@ -116,7 +116,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
         if (showModalDetails) {
             fetchData();
         }
-    }, [id, showModalDetails, setLoading])
+    }, [address, showModalDetails, setLoading])
 
     return (
         <>

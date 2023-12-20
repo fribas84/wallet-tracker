@@ -1,11 +1,9 @@
 import { IsInt, IsString, Min, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
+import { ObjectId } from 'mongodb';
 export class WalletDTO {
-  @IsInt()
-  @Min(1)
-  @ApiProperty({ type: Number, description: 'Id of the wallet' })
-  id: number;
+  @ApiProperty({ type: ObjectId, description: 'Id of the wallet' })
+  id: ObjectId;
 
   @IsString()
   @ApiProperty({ type: String, description: 'Name of the wallet' })
@@ -16,10 +14,8 @@ export class WalletDTO {
   @ApiProperty({ type: String, description: 'Address of the wallet' })
   address: string;
 
-  @IsInt()
-  @Min(1)
   @ApiProperty({ type: Number, description: 'Id of the user' })
-  userId: number;
+  userId: ObjectId;
 
   @IsInt()
   @Min(0)

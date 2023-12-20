@@ -5,7 +5,7 @@ import {
   Logger,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { ObjectId, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { emailRecoverPassword, emailRegister } from 'src/helpers/emailHelper';
@@ -33,7 +33,7 @@ export class UsersService {
     return user;
   }
 
-  async findOneId(id: number) {
+  async findOneId(id: ObjectId) {
     const user = await this.repo.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -49,13 +49,13 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, attrs: Partial<User>) {
+  async update(id: ObjectId, attrs: Partial<User>) {
     const user = await this.findOneId(id);
     Object.assign(user, attrs);
     return this.repo.save(user);
   }
 
-  async remove(id: number) {
+  async remove(id: ObjectId) {
     const user = await this.findOneId(id);
     return this.repo.remove(user);
   }

@@ -25,6 +25,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { WalletsService } from './wallets.service';
 import { UpdateWalletsDTO } from './dtos/updateWallets.dto';
 import { UpdateRateDto } from './dtos/updateRate.dto';
+import { ObjectId } from 'typeorm';
 @ApiBearerAuth()
 @ApiTags('wallets')
 @Controller('wallets')
@@ -39,7 +40,7 @@ export class WalletsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   getWalletsFromUser(@Request() req: any) {
-    return this.walletService.getWallets(parseInt(req.user.id));
+    return this.walletService.getWallets(req.user.id);
   }
 
   @ApiOperation({ summary: 'Add a new wallet' })
@@ -53,7 +54,7 @@ export class WalletsController {
     return this.walletService.createWallet(
       body.name,
       body.address,
-      parseInt(req.user.id),
+      req.user.id,
     );
   }
 
@@ -61,21 +62,15 @@ export class WalletsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
   @Delete('/:walletId')
-  removeWallet(@Param('walletId') walletId: string, @Request() req: any) {
-    return this.walletService.removeWallet(
-      parseInt(walletId),
-      parseInt(req.user.id),
-    );
+  removeWallet(@Param('walletId') walletId: ObjectId, @Request() req: any) {
+    return this.walletService.removeWallet(walletId, req.user.id);
   }
 
   @ApiOperation({ summary: 'Edit multiple wallets' })
   @UseGuards(JwtAuthGuard)
   @Patch('/edit/multiple')
   editMultiple(@Body() body: UpdateWalletsDTO, @Request() req: any) {
-    return this.walletService.updateWallets(
-      body.wallets,
-      parseInt(req.user.id),
-    );
+    return this.walletService.updateWallets(body.wallets, req.user.id);
   }
 
   @ApiOperation({ summary: 'Get wallet balance' })
@@ -84,12 +79,9 @@ export class WalletsController {
     description: 'Wallet balance',
   })
   @UseGuards(JwtAuthGuard)
-  @Get('balance/:walletId')
-  getWalletBalance(@Param('walletId') walletId: string, @Request() req: any) {
-    return this.walletService.getWalletBalance(
-      parseInt(walletId),
-      parseInt(req.user.id),
-    );
+  @Get('balance/:address')
+  getWalletBalance(@Param('address') address: string, @Request() req: any) {
+    return this.walletService.getWalletBalance(address, req.user.id);
   }
 
   @ApiOperation({ summary: 'Get current rates' })

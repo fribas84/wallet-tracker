@@ -12,8 +12,9 @@ import { ConfigModule } from '@nestjs/config';
     WalletsModule,
     UsersModule,
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
+      type: 'mongodb',
+      url: process.env.MONGO_URL,
+      ssl: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
