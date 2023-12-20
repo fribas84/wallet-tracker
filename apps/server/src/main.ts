@@ -7,7 +7,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.setGlobalPrefix('api/v1');
-  app.enableCors();
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'https://nextjs-web-production.up.railway.app',
+    ],
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Wallet Tracker')
