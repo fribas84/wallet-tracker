@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Alert from "../Alert";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { axiosClient } from "@/config/axiosClient";
 
 interface Props {
     showModal: boolean,
