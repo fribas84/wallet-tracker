@@ -52,7 +52,7 @@ export default function ModalNewWallet({ showModal, setShowModal, id, name, dele
         } catch (error) {
             setShowAlert(true);
             setAlert(true);
-            setAlertMsg(error.response.data.message || 'Error deleting wallet');
+            setAlertMsg((error as any).response.data.message || 'Error deleting wallet');
         }
 
     }

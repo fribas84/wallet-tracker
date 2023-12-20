@@ -36,7 +36,7 @@ export default function Page({ params }: { params: { token: string } }) {
         } catch (error) {
             console.log(error);
             setAlertError(true);
-            setAlertMsg(error?.response.data.message || 'Error occured while confirming your account');
+            setAlertMsg((error as any).response.data.message || 'Error occured while confirming your account');
             setShowAlert(true);
         }
 

@@ -80,7 +80,7 @@ export default function ModalEditWallet({wallet, showModal, setShowModal, update
     catch (error) {
       setShowAlert(true);
       setAlert(true);
-      setAlertMsg(error.response.data.error || 'Error creating user');;
+      setAlertMsg((error as any).response.data.error || 'Error creating user');;
     }
   };
   return (

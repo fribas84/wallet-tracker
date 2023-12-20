@@ -68,7 +68,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
                 setLoading(false);
                 setAlertError(true);
                 setShowAlert(true);
-                setAlertMsg(error.response.data.message || 'Something went wrong');
+                setAlertMsg((error as any).response.data.message || 'Something went wrong');
             }
         }
         const fetchRates = async () => {
@@ -93,7 +93,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
                 setLoading(false);
                 setAlertError(true);
                 setShowAlert(true);
-                setAlertMsg(error?.response?.data.message || 'Something went wrong');
+                setAlertMsg((error as any).response.data.message || 'Something went wrong');
             }
         }
 
@@ -107,7 +107,7 @@ const ModalDetails = ({ name, id, showModalDetails, setShowModalDetails }: Props
                 setLoading(false);
                 setAlertError(true);
                 setShowAlert(true);
-                setAlertMsg(error?.response?.data.message || 'Something went wrong');
+                setAlertMsg((error as any).response.data.message || 'Something went wrong');
             }
 
             setLoading(false);

@@ -82,7 +82,7 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
         catch (error) {
             setShowAlert(true);
             setAlert(true);
-            setAlertMsg(error.response.data.message || 'Something went wrong');
+            setAlertMsg((error as any).response.data.message || 'Something went wrong');
         }
     };
     return (
