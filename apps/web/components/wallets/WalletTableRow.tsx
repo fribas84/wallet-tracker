@@ -47,7 +47,7 @@ const WalletTableRow = ({ wallet, moveUp, moveDown, walletCount, deleteWallet }:
           </td>
             <td>
                 <ModalDetails name={wallet.name} showModalDetails={showDetails} setShowModalDetails={setShowDetails} address={wallet.address} />
-                <DeleteModal name={wallet.name} showModal={showRemove} setShowModal={setShowRemove} id={wallet.id} deleteWallet={deleteWallet}/>
+                <DeleteModal name={wallet.name} showModal={showRemove} setShowModal={setShowRemove} address={wallet.address} deleteWallet={deleteWallet}/>
             </td>
         </tr>
     )

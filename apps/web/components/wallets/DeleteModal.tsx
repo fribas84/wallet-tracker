@@ -7,12 +7,12 @@ import { axiosClient } from "@/config/axiosClient";
 interface Props {
     showModal: boolean,
     setShowModal: Dispatch<SetStateAction<boolean>>
-    id: number,
+    address: string,
     name: string,
     deleteWallet: (id: number) => void
 }
 
-export default function ModalNewWallet({ showModal, setShowModal, id, name, deleteWallet }: Props) {
+export default function ModalNewWallet({ showModal, setShowModal, address, name, deleteWallet }: Props) {
     const [alert, setAlert] = useState<boolean>(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [alertMsg, setAlertMsg] = useState<string>('');
@@ -31,7 +31,7 @@ export default function ModalNewWallet({ showModal, setShowModal, id, name, dele
 
     const handleDelete = async ()=>{
         try {
-            const url = `/wallets/${id}`
+            const url = `/wallets/${address}`
             const token = localStorage.getItem('token');
             if (!token) {
                 return
