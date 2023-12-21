@@ -10,7 +10,7 @@ interface Props {
 
 const FiatCard = ({ balance, usd, eur }: Props) => {
   const [usdUnit, setUsdUnit] = useState<boolean>(true);
-  const [valueInFiat,setValueInFiat] = useState<number>(0);
+  const [valueInFiat, setValueInFiat] = useState<number>(0);
   const [rateEditable, setRateEditable] = useState<boolean>(false);
   const [currentRate, setCurrentRate] = useState<number>(0);
   const [alert, setAlert] = useState<boolean>(false);
@@ -22,7 +22,7 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
     if (showAlert) {
       timer = setTimeout(() => {
         setShowAlert(false);
-  
+
       }, 5000);
     }
     return () => clearTimeout(timer);
@@ -35,12 +35,12 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
     else {
       setCurrentRate(eur);
     }
-  }, [usdUnit,usd,eur])
+  }, [usdUnit, usd, eur])
 
   useEffect(() => {
     setValueInFiat(balance * currentRate);
 
-  }, [currentRate,balance])
+  }, [currentRate, balance])
 
   const reset = () => {
     setRateEditable(false);
@@ -49,7 +49,7 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
   }
 
   const handleSave = async () => {
-    if(currentRate === 0){
+    if (currentRate === 0) {
       setAlert(true);
       setAlertMsg('Rate cannot be 0');
       setShowAlert(true);
@@ -80,10 +80,10 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
       setShowAlert(true);
 
     }
-     
+
     catch (error) {
       setAlert(true);
-      setAlertMsg((error as any).response.data.message ||  'Error updating rate');
+      setAlertMsg((error as any).response.data.message || 'Error updating rate');
       setShowAlert(true);
     }
   }
@@ -94,12 +94,12 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
       <div className='flex justify-between border-b-2'>
         <h1 className='text-2xl font-bold mx-5 my-2'>To Fiat</h1>
         <div>
-         
+
           <button
             className='my-2 bg-blue-500 text-white text-xl py-2 px-4 leading-none rounded hover:bg-blue-600 mx-2'
             onClick={() => setUsdUnit(!usdUnit)}
           >
-            {usd ? 'usd' : 'eur'}
+            {usdUnit ? 'usd' : 'eur'}
           </button>
           <button
             className='my-2 bg-gray-500 text-white text-xl py-2  px-4 leading-none rounded hover:bg-gray-600 mx-2'
@@ -125,7 +125,7 @@ const FiatCard = ({ balance, usd, eur }: Props) => {
           </span>
         </div>
         <div className='mb-4 w-full text-right'>
-          <label htmlFor='balanceInFiat' className="text-lg font-bold text-gray-700 mr-2">Balance in { usdUnit? 'usd': 'eur' }</label>
+          <label htmlFor='balanceInFiat' className="text-lg font-bold text-gray-700 mr-2">Balance in {usdUnit ? 'usd' : 'eur'}</label>
           <input
             id="balanceInFiat"
             type='number'
