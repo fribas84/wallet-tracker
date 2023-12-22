@@ -72,7 +72,6 @@ export default function ModalNewWallet({ showModal, setShowModal, addNewWallet }
             }
             const body = { name:name, address: address };
             const response = await axiosClient.post(url, body, config);
-            console.log(response);
             setName('');
             setAddress('');
             addNewWallet(response.data);

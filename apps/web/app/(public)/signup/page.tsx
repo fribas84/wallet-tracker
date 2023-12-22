@@ -68,10 +68,8 @@ const Signup = (props: Props) => {
           "Content-Type": "application/json"
         }
       }
-      console.log({ email, password });
       const response = await axiosClient.post(url, { email, password }, config);
       setLoading(false);
-      console.log(response);
       setAlertMsg('Check your email to activate your account');
       setAlert(false);
       setShowAlert(true)

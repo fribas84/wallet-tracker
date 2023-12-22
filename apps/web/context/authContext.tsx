@@ -71,7 +71,6 @@ export function AuthProvider({ children }: Props) {
     }, [accessToken])
 
     const login = async (email: string, password: string) => {
-        console.log('login')
         try {
             const url = `/auth/login`;
             const data = { email, password };

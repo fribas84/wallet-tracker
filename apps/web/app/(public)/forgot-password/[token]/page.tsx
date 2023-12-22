@@ -63,7 +63,6 @@ export default function ConfirmRecover({ params }: { params: { token: string } }
                 }
             }
             const response = await axiosClient.post(url, { email, password }, config);
-            console.log(response);
             setEmail('');
             setPassword('');
             setPassword2('');

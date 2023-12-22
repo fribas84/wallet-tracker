@@ -17,7 +17,6 @@ export default function Page({ params }: { params: { token: string } }) {
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(params.token)
         if(email.length <6) {
             setAlertError(true);
             setAlertMsg('Email is required');
@@ -26,7 +25,6 @@ export default function Page({ params }: { params: { token: string } }) {
         } 
         try {
             const url = `/users/confirm/${params.token}`;
-            console.log(url);
             const response = await axiosClient.post(url, {email});
             const data = response.data;
             setAlertError(false);
@@ -34,7 +32,6 @@ export default function Page({ params }: { params: { token: string } }) {
             setShowAlert(true);
             router.push('/login');
         } catch (error) {
-            console.log(error);
             setAlertError(true);
             setAlertMsg((error as any).response.data.message || 'Error occured while confirming your account');
             setShowAlert(true);
