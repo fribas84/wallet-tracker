@@ -34,7 +34,7 @@ The exchange rates are valid for five minutes; the user can update them, which w
 ![walletDetail](https://github.com/fribas84/wallet-tracker/blob/main/desing/walletDetailModal.jpeg)
 ### User Authentication
 For the User Authentication, the backend uses PassportJS to create JWT authentication. To get a valid token:
-- The user must log in with User/password
+- The user must log in with the User/password
     - an Access Token is the return
 - This Access Token must be sent as an Authentication Bearer Token Header to access the platform
 
@@ -45,7 +45,7 @@ Currently, the applications are deployed in Railway and are fully functional:
 - [Front End](https://nextjs-web-production.up.railway.app/)
 - [Back End](https://nest-js-server-production.up.railway.app/)
 
-*Disclaimer: Due to this development phase, and entities not fully finished, Nest JS is using the synchronize feature for the entities.*
+*Disclaimer: Due to this development phase, and entities not being fully finished, Nest JS is using the synchronize feature for the entities.*
 
 ## Environment Variables
 
