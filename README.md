@@ -1,6 +1,8 @@
 
 # Wallet Tracker
 
+## Description
+
 This is a test project, that allows user to track their favorites Ethereum Wallets balances and update the exchange rate to USD and EUR.
 This project is uses 2 seperated applicaitons, a Web Application developt with Next.JS and a Server Application made with Nest.JS
 
