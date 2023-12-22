@@ -1,10 +1,8 @@
 
 # Wallet Tracker
 
-## Description
-
-This is a test project, that allows user to track their favorites Ethereum Wallets balances and update the exchange rate to USD and EUR.
-This project is uses 2 seperated applicaitons, a Web Application developt with Next.JS and a Server Application made with Nest.JS
+This test project allows users to track their favorite Ethereum Wallets balances and update the exchange rate to USD and EUR.
+This project uses 2 separate applications, a Web Application developed with Next.JS and a Server Application made with Nest.JS
 
 This mono repo uses a [PNPM Workspace](https://pnpm.io/workspaces). The folder structure:
 
@@ -21,33 +19,33 @@ This mono repo uses a [PNPM Workspace](https://pnpm.io/workspaces). The folder s
 ## Features
 ![home](https://github.com/fribas84/wallet-tracker/blob/main/desing/home.jpeg)
 ### User Register
-When a user signups an email conformation is sent to the users email address. He can only access the application once the user confirms.
+When a user signups an email confirmation is sent to the user's email address. He can only access the application once the user confirms.
 ![register](https://github.com/fribas84/wallet-tracker/blob/main/desing/signup.jpeg)
 ![confirmationEmail](https://github.com/fribas84/wallet-tracker/blob/main/desing/confirmationEmail.jpeg)
-### Pasword Recovery
-Same as, user Register, when to recover a password, an email is sent to the user to trigger the password recover process.
+### Password Recovery
+Same as, the user Register, when to recover a password, an email is sent to the user to trigger the password recovery process.
 
 ### Add Wallets to track
 The user can add any Ethereum valid address and monitor the balance, it can select the fiat currency, or display units wei/Ethereum
 ![newWallet](https://github.com/fribas84/wallet-tracker/blob/main/desing/newWalletModal.jpeg)
 ![walletList](https://github.com/fribas84/wallet-tracker/blob/main/desing/walletList.jpeg)
 ### Rates
-The exchange rates are valid for five minutes, the user can update them and this will be stores in the database, but they will only be valid for a certain period of time. 
+The exchange rates are valid for five minutes; the user can update them, which will be stored in the database, but they will only be valid for a certain period. 
 ![walletDetail](https://github.com/fribas84/wallet-tracker/blob/main/desing/walletDetailModal.jpeg)
 ### User Authentication
-For the User Authentication, the backend uses PassportJS to create JWT authentication. In order to get a valid token:
-- The user must log in with User / password
-    - an Access Token is return
-- This Access Token must be sent as a Authentication Bearer Token Header to access the platform
+For the User Authentication, the backend uses PassportJS to create JWT authentication. To get a valid token:
+- The user must log in with User/password
+    - an Access Token is the return
+- This Access Token must be sent as an Authentication Bearer Token Header to access the platform
 
 ## Deployment
 
-Currently the applications are deployed in Railway and are fully functional:
+Currently, the applications are deployed in Railway and are fully functional:
 
 - [Front End](https://nextjs-web-production.up.railway.app/)
 - [Back End](https://nest-js-server-production.up.railway.app/)
 
-*Disclaimer: Due to this is a development phase, and entities are not fully finished, Nest JS is using the syncronize feature for the entities.*
+*Disclaimer: Due to this development phase, and entities not fully finished, Nest JS is using the synchronize feature for the entities.*
 
 ## Environment Variables
 
